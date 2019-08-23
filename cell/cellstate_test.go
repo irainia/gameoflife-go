@@ -46,3 +46,27 @@ func TestNewShouldReturnNilAndErrorForInitialStateEmpty(t *testing.T) {
 		t.Errorf("expected: %s -- actual: %s", expectedError.Error(), actualError.Error())
 	}
 }
+
+func TestNewShouldReturnNilAndErrorForInitialStateNotRectangle(t *testing.T) {
+	var initialState [][]bool = [][]bool{
+		{true, true, true},
+		{true},
+		{true, true},
+	}
+	var expectedCellState *cell.CellState = nil
+	var expectedError = errors.New(cell.ArgumentShapeNotRectangleError)
+
+	actualState, actualError := cell.New(initialState)
+
+	if actualState != expectedCellState {
+		t.Error("expected: nil -- actual: not nil")
+		return
+	}
+	if actualError == nil {
+		t.Errorf("expected: %s -- actual: nil", expectedError.Error())
+		return
+	}
+	if actualError.Error() != expectedError.Error() {
+		t.Errorf("expected: %s -- actual: %s", expectedError.Error(), actualError.Error())
+	}
+}
