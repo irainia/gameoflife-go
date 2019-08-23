@@ -3,7 +3,8 @@ package cell
 import "errors"
 
 const (
-	ArgumentNilError = "argument passed is nil"
+	ArgumentNilError   = "argument passed is nil"
+	ArgumentEmptyError = "argument passed is empty"
 )
 
 type CellState struct {
@@ -11,5 +12,8 @@ type CellState struct {
 }
 
 func New(initialState [][]bool) (*CellState, error) {
-	return nil, errors.New(ArgumentNilError)
+	if initialState == nil {
+		return nil, errors.New(ArgumentNilError)
+	}
+	return nil, errors.New(ArgumentEmptyError)
 }

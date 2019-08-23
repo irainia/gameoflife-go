@@ -25,3 +25,24 @@ func TestNewShouldReturnNilAndErrorForInitialStateNil(t *testing.T) {
 		t.Errorf("expected: %s -- actual: %s", expectedError.Error(), actualError.Error())
 	}
 }
+
+func TestNewShouldReturnNilAndErrorForInitialStateEmpty(t *testing.T) {
+	var expectedCellState *cell.CellState = nil
+	var expectedError error = errors.New(cell.ArgumentEmptyError)
+	var dim int = 0
+	initialState := make([][]bool, dim)
+
+	actualCellState, actualError := cell.New(initialState)
+
+	if actualCellState != expectedCellState {
+		t.Error("expected: nil -- actual: not nil")
+		return
+	}
+	if actualError == nil {
+		t.Errorf("expected: %s -- actual: nil", expectedError.Error())
+		return
+	}
+	if actualError.Error() != expectedError.Error() {
+		t.Errorf("expected: %s -- actual: %s", expectedError.Error(), actualError.Error())
+	}
+}
