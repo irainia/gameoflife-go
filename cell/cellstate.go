@@ -24,8 +24,25 @@ func New(initialState [][]bool) (*CellState, error) {
 		return nil, err
 	}
 
+	maxColIndex := 0
+	for i := 0; i < len(initialState); i++ {
+		for j := 0; j < len(initialState[i]); j++ {
+			if initialState[i][j] && j > maxColIndex {
+				maxColIndex = j
+			}
+		}
+	}
+
+	trimmedState := make([][]bool, len(initialState))
+	for i := 0; i < len(initialState); i++ {
+		trimmedState[i] = make([]bool, maxColIndex+1)
+		for j := 0; j <= maxColIndex; j++ {
+			trimmedState[i][j] = initialState[i][j]
+		}
+	}
+
 	cellState := CellState{
-		currentState: duplicateState(initialState),
+		currentState: trimmedState,
 	}
 	return &cellState, nil
 }
