@@ -19,24 +19,33 @@ func (cellState *CellState) GetCurrentState() [][]bool {
 }
 
 func New(initialState [][]bool) (*CellState, error) {
-	if initialState == nil {
-		return nil, errors.New(ArgumentNilError)
-	}
-	if len(initialState) == 0 {
-		return nil, errors.New(ArgumentEmptyError)
-	}
-
-	colLength := len(initialState[0])
-	for i := 0; i < len(initialState); i++ {
-		if len(initialState[i]) != colLength {
-			return nil, errors.New(ArgumentShapeNotRectangleError)
-		}
+	isValid, err := isStateValid(initialState)
+	if !isValid || err != nil {
+		return nil, err
 	}
 
 	cellState := CellState{
 		currentState: duplicateState(initialState),
 	}
 	return &cellState, nil
+}
+
+func isStateValid(state [][]bool) (bool, error) {
+	if state == nil {
+		return false, errors.New(ArgumentNilError)
+	}
+	if len(state) == 0 {
+		return false, errors.New(ArgumentEmptyError)
+	}
+
+	colLength := len(state[0])
+	for i := 0; i < len(state); i++ {
+		if len(state[i]) != colLength {
+			return false, errors.New(ArgumentShapeNotRectangleError)
+		}
+	}
+
+	return true, nil
 }
 
 func duplicateState(originalState [][]bool) [][]bool {
