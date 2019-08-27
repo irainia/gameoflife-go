@@ -7,7 +7,7 @@ import (
 	"github.com/Irainia/gameoflife-go/cell"
 )
 
-func TestNewShouldReturnNilAndErrorForInitialStateNil(t *testing.T) {
+func TestNewShouldReturnNilAndErrorForInitialGenerationNil(t *testing.T) {
 	var expectedCellState *cell.CellState = nil
 	var expectedError error = errors.New(cell.ArgumentNilError)
 
@@ -26,13 +26,13 @@ func TestNewShouldReturnNilAndErrorForInitialStateNil(t *testing.T) {
 	}
 }
 
-func TestNewShouldReturnNilAndErrorForInitialStateEmpty(t *testing.T) {
+func TestNewShouldReturnNilAndErrorForInitialGenerationEmpty(t *testing.T) {
 	var expectedCellState *cell.CellState = nil
 	var expectedError error = errors.New(cell.ArgumentEmptyError)
 	var dim int = 0
-	initialState := make([][]bool, dim)
+	initialGeneration := make([][]bool, dim)
 
-	actualCellState, actualError := cell.New(initialState)
+	actualCellState, actualError := cell.New(initialGeneration)
 
 	if actualCellState != expectedCellState {
 		t.Error("expected: nil -- actual: not nil")
@@ -47,8 +47,8 @@ func TestNewShouldReturnNilAndErrorForInitialStateEmpty(t *testing.T) {
 	}
 }
 
-func TestNewShouldReturnNilAndErrorForInitialStateNotRectangle(t *testing.T) {
-	var initialState [][]bool = [][]bool{
+func TestNewShouldReturnNilAndErrorForInitialGenerationNotRectangle(t *testing.T) {
+	var initialGeneration [][]bool = [][]bool{
 		{true, true, true},
 		{true},
 		{true, true},
@@ -56,9 +56,9 @@ func TestNewShouldReturnNilAndErrorForInitialStateNotRectangle(t *testing.T) {
 	var expectedCellState *cell.CellState = nil
 	var expectedError = errors.New(cell.ArgumentShapeNotRectangleError)
 
-	actualState, actualError := cell.New(initialState)
+	actualGeneration, actualError := cell.New(initialGeneration)
 
-	if actualState != expectedCellState {
+	if actualGeneration != expectedCellState {
 		t.Error("expected: nil -- actual: not nil")
 		return
 	}
@@ -71,234 +71,234 @@ func TestNewShouldReturnNilAndErrorForInitialStateNotRectangle(t *testing.T) {
 	}
 }
 
-func TestGetCurrentStateShouldReturnInitialState(t *testing.T) {
-	var initialState [][]bool = [][]bool{
+func TestGetCurrentGenerationShouldReturnInitialGeneration(t *testing.T) {
+	var initialGeneration [][]bool = [][]bool{
 		{false, true, false},
 		{false, false, true},
 		{true, true, true},
 	}
-	cellState, _ := cell.New(initialState)
-	var expectedState [][]bool = initialState
+	cellState, _ := cell.New(initialGeneration)
+	var expectedGeneration [][]bool = initialGeneration
 
-	actualState := cellState.GetCurrentState()
+	actualGeneration := cellState.GetCurrentGeneration()
 
-	for i := 0; i < len(expectedState); i++ {
-		for j := 0; j < len(expectedState[i]); j++ {
-			if actualState[i][j] != expectedState[i][j] {
+	for i := 0; i < len(expectedGeneration); i++ {
+		for j := 0; j < len(expectedGeneration[i]); j++ {
+			if actualGeneration[i][j] != expectedGeneration[i][j] {
 				t.Errorf("expected: [%d][%d] [%t] -- actual: [%d][%d] [%t]",
-					i, j, expectedState[i][j], i, j, actualState[i][j])
+					i, j, expectedGeneration[i][j], i, j, actualGeneration[i][j])
 			}
 		}
 	}
 }
 
-func TestGetCurrentStateShouldBeImmutableOnCreation(t *testing.T) {
-	var initialState [][]bool = [][]bool{
+func TestGetCurrentGenerationShouldBeImmutableOnCreation(t *testing.T) {
+	var initialGeneration [][]bool = [][]bool{
 		{false, true, false},
 		{false, false, true},
 		{true, true, true},
 	}
-	cellState, _ := cell.New(initialState)
-	var expectedState [][]bool = [][]bool{
+	cellState, _ := cell.New(initialGeneration)
+	var expectedGeneration [][]bool = [][]bool{
 		{false, true, false},
 		{false, false, true},
 		{true, true, true},
 	}
 
-	initialState[1][1] = !initialState[1][1]
-	actualState := cellState.GetCurrentState()
+	initialGeneration[1][1] = !initialGeneration[1][1]
+	actualGeneration := cellState.GetCurrentGeneration()
 
-	for i := 0; i < len(expectedState); i++ {
-		for j := 0; j < len(expectedState[i]); j++ {
-			if actualState[i][j] != expectedState[i][j] {
+	for i := 0; i < len(expectedGeneration); i++ {
+		for j := 0; j < len(expectedGeneration[i]); j++ {
+			if actualGeneration[i][j] != expectedGeneration[i][j] {
 				t.Errorf("expected: [%d][%d] [%t] -- actual: [%d][%d] [%t]",
-					i, j, expectedState[i][j], i, j, actualState[i][j])
+					i, j, expectedGeneration[i][j], i, j, actualGeneration[i][j])
 			}
 		}
 	}
 }
 
-func TestGetCurrentStateShouldBeImmutableOnRetrieval(t *testing.T) {
-	var initialState [][]bool = [][]bool{
+func TestGetCurrentGenerationShouldBeImmutableOnRetrieval(t *testing.T) {
+	var initialGeneration [][]bool = [][]bool{
 		{false, true, false},
 		{false, false, true},
 		{true, true, true},
 	}
-	cellState, _ := cell.New(initialState)
-	var expectedState [][]bool = [][]bool{
+	cellState, _ := cell.New(initialGeneration)
+	var expectedGeneration [][]bool = [][]bool{
 		{false, true, false},
 		{false, false, true},
 		{true, true, true},
 	}
 
-	temporaryState := cellState.GetCurrentState()
+	temporaryState := cellState.GetCurrentGeneration()
 	temporaryState[1][1] = !temporaryState[1][1]
-	actualState := cellState.GetCurrentState()
+	actualGeneration := cellState.GetCurrentGeneration()
 
-	for i := 0; i < len(expectedState); i++ {
-		for j := 0; j < len(expectedState[i]); j++ {
-			if actualState[i][j] != expectedState[i][j] {
+	for i := 0; i < len(expectedGeneration); i++ {
+		for j := 0; j < len(expectedGeneration[i]); j++ {
+			if actualGeneration[i][j] != expectedGeneration[i][j] {
 				t.Errorf("expected: [%d][%d] [%t] -- actual: [%d][%d] [%t]",
-					i, j, expectedState[i][j], i, j, actualState[i][j])
+					i, j, expectedGeneration[i][j], i, j, actualGeneration[i][j])
 			}
 		}
 	}
 }
 
-func TestGetCurrentStateShouldTrimRightSideToNearestLivingCell(t *testing.T) {
-	var initialState [][]bool = [][]bool{
+func TestGetCurrentGenerationShouldTrimRightSideToNearestLivingCell(t *testing.T) {
+	var initialGeneration [][]bool = [][]bool{
 		{true, true, false},
 		{true, true, false},
 	}
-	cellState, _ := cell.New(initialState)
-	var expectedState [][]bool = [][]bool{
+	cellState, _ := cell.New(initialGeneration)
+	var expectedGeneration [][]bool = [][]bool{
 		{true, true},
 		{true, true},
 	}
 
-	actualState := cellState.GetCurrentState()
+	actualGeneration := cellState.GetCurrentGeneration()
 
-	if len(actualState) != len(expectedState) {
-		t.Errorf("expected: %d -- actual: %d", len(expectedState), len(actualState))
+	if len(actualGeneration) != len(expectedGeneration) {
+		t.Errorf("expected: %d -- actual: %d", len(expectedGeneration), len(actualGeneration))
 		return
 	}
-	if len(actualState[0]) != len(expectedState[0]) {
-		t.Errorf("expected: %d -- actual: %d", len(expectedState[0]), len(actualState[0]))
+	if len(actualGeneration[0]) != len(expectedGeneration[0]) {
+		t.Errorf("expected: %d -- actual: %d", len(expectedGeneration[0]), len(actualGeneration[0]))
 		return
 	}
-	for i := 0; i < len(expectedState); i++ {
-		for j := 0; j < len(expectedState[i]); j++ {
-			if actualState[i][j] != expectedState[i][j] {
+	for i := 0; i < len(expectedGeneration); i++ {
+		for j := 0; j < len(expectedGeneration[i]); j++ {
+			if actualGeneration[i][j] != expectedGeneration[i][j] {
 				t.Errorf("expected: [%d][%d] [%t] -- actual: [%d][%d] [%t]",
-					i, j, expectedState[i][j], i, j, actualState[i][j])
+					i, j, expectedGeneration[i][j], i, j, actualGeneration[i][j])
 			}
 		}
 	}
 }
 
-func TestGetCurrentStateShouldTrimBottomSideToNearestLivingCell(t *testing.T) {
-	var initialState [][]bool = [][]bool{
+func TestGetCurrentGenerationShouldTrimBottomSideToNearestLivingCell(t *testing.T) {
+	var initialGeneration [][]bool = [][]bool{
 		{true, true},
 		{true, true},
 		{false, false},
 	}
-	cellState, _ := cell.New(initialState)
-	var expectedState [][]bool = [][]bool{
+	cellState, _ := cell.New(initialGeneration)
+	var expectedGeneration [][]bool = [][]bool{
 		{true, true},
 		{true, true},
 	}
 
-	actualState := cellState.GetCurrentState()
+	actualGeneration := cellState.GetCurrentGeneration()
 
-	if len(actualState) != len(expectedState) {
-		t.Errorf("expected: %d -- actual: %d", len(expectedState), len(actualState))
+	if len(actualGeneration) != len(expectedGeneration) {
+		t.Errorf("expected: %d -- actual: %d", len(expectedGeneration), len(actualGeneration))
 		return
 	}
-	if len(actualState[0]) != len(expectedState[0]) {
-		t.Errorf("expected: %d -- actual: %d", len(expectedState[0]), len(actualState[0]))
+	if len(actualGeneration[0]) != len(expectedGeneration[0]) {
+		t.Errorf("expected: %d -- actual: %d", len(expectedGeneration[0]), len(actualGeneration[0]))
 		return
 	}
-	for i := 0; i < len(expectedState); i++ {
-		for j := 0; j < len(expectedState[i]); j++ {
-			if actualState[i][j] != expectedState[i][j] {
+	for i := 0; i < len(expectedGeneration); i++ {
+		for j := 0; j < len(expectedGeneration[i]); j++ {
+			if actualGeneration[i][j] != expectedGeneration[i][j] {
 				t.Errorf("expected: [%d][%d] [%t] -- actual: [%d][%d] [%t]",
-					i, j, expectedState[i][j], i, j, actualState[i][j])
+					i, j, expectedGeneration[i][j], i, j, actualGeneration[i][j])
 			}
 		}
 	}
 }
 
-func TestGetCurrentStateShouldTrimLeftSideToNearestLivingCell(t *testing.T) {
-	var initialState [][]bool = [][]bool{
+func TestGetCurrentGenerationShouldTrimLeftSideToNearestLivingCell(t *testing.T) {
+	var initialGeneration [][]bool = [][]bool{
 		{false, true, true},
 		{false, true, true},
 	}
-	cellState, _ := cell.New(initialState)
-	var expectedState [][]bool = [][]bool{
+	cellState, _ := cell.New(initialGeneration)
+	var expectedGeneration [][]bool = [][]bool{
 		{true, true},
 		{true, true},
 	}
 
-	actualState := cellState.GetCurrentState()
+	actualGeneration := cellState.GetCurrentGeneration()
 
-	if len(actualState) != len(expectedState) {
-		t.Errorf("expected: %d -- actual: %d", len(expectedState), len(actualState))
+	if len(actualGeneration) != len(expectedGeneration) {
+		t.Errorf("expected: %d -- actual: %d", len(expectedGeneration), len(actualGeneration))
 		return
 	}
-	if len(actualState[0]) != len(expectedState[0]) {
-		t.Errorf("expected: %d -- actual: %d", len(expectedState[0]), len(actualState[0]))
+	if len(actualGeneration[0]) != len(expectedGeneration[0]) {
+		t.Errorf("expected: %d -- actual: %d", len(expectedGeneration[0]), len(actualGeneration[0]))
 		return
 	}
-	for i := 0; i < len(expectedState); i++ {
-		for j := 0; j < len(expectedState[i]); j++ {
-			if actualState[i][j] != expectedState[i][j] {
+	for i := 0; i < len(expectedGeneration); i++ {
+		for j := 0; j < len(expectedGeneration[i]); j++ {
+			if actualGeneration[i][j] != expectedGeneration[i][j] {
 				t.Errorf("expected: [%d][%d] [%t] -- actual: [%d][%d] [%t]",
-					i, j, expectedState[i][j], i, j, actualState[i][j])
+					i, j, expectedGeneration[i][j], i, j, actualGeneration[i][j])
 			}
 		}
 	}
 }
 
-func TestGetCurrentStateShouldTrimTopSideToNearestLivingCell(t *testing.T) {
-	var initialState [][]bool = [][]bool{
+func TestGetCurrentGenerationShouldTrimTopSideToNearestLivingCell(t *testing.T) {
+	var initialGeneration [][]bool = [][]bool{
 		{false, false},
 		{true, true},
 		{true, true},
 	}
-	cellState, _ := cell.New(initialState)
-	var expectedState [][]bool = [][]bool{
+	cellState, _ := cell.New(initialGeneration)
+	var expectedGeneration [][]bool = [][]bool{
 		{true, true},
 		{true, true},
 	}
 
-	actualState := cellState.GetCurrentState()
+	actualGeneration := cellState.GetCurrentGeneration()
 
-	if len(actualState) != len(expectedState) {
-		t.Errorf("expected: %d -- actual: %d", len(expectedState), len(actualState))
+	if len(actualGeneration) != len(expectedGeneration) {
+		t.Errorf("expected: %d -- actual: %d", len(expectedGeneration), len(actualGeneration))
 		return
 	}
-	if len(actualState[0]) != len(expectedState[0]) {
-		t.Errorf("expected: %d -- actual: %d", len(expectedState[0]), len(actualState[0]))
+	if len(actualGeneration[0]) != len(expectedGeneration[0]) {
+		t.Errorf("expected: %d -- actual: %d", len(expectedGeneration[0]), len(actualGeneration[0]))
 		return
 	}
-	for i := 0; i < len(expectedState); i++ {
-		for j := 0; j < len(expectedState[i]); j++ {
-			if actualState[i][j] != expectedState[i][j] {
+	for i := 0; i < len(expectedGeneration); i++ {
+		for j := 0; j < len(expectedGeneration[i]); j++ {
+			if actualGeneration[i][j] != expectedGeneration[i][j] {
 				t.Errorf("expected: [%d][%d] [%t] -- actual: [%d][%d] [%t]",
-					i, j, expectedState[i][j], i, j, actualState[i][j])
+					i, j, expectedGeneration[i][j], i, j, actualGeneration[i][j])
 			}
 		}
 	}
 }
 
-func TestGetCurrentStateShouldNotTrimForNoLivingcell(t *testing.T) {
-	var initialState [][]bool = [][]bool{
+func TestGetCurrentGenerationShouldNotTrimForNoLivingcell(t *testing.T) {
+	var initialGeneration [][]bool = [][]bool{
 		{false, false, false},
 		{false, false, false},
 		{false, false, false},
 	}
-	cellState, _ := cell.New(initialState)
-	var expectedState [][]bool = [][]bool{
+	cellState, _ := cell.New(initialGeneration)
+	var expectedGeneration [][]bool = [][]bool{
 		{false, false, false},
 		{false, false, false},
 		{false, false, false},
 	}
 
-	actualState := cellState.GetCurrentState()
+	actualGeneration := cellState.GetCurrentGeneration()
 
-	if len(actualState) != len(expectedState) {
-		t.Errorf("expected: %d -- actual: %d", len(expectedState), len(actualState))
+	if len(actualGeneration) != len(expectedGeneration) {
+		t.Errorf("expected: %d -- actual: %d", len(expectedGeneration), len(actualGeneration))
 		return
 	}
-	if len(actualState[0]) != len(expectedState[0]) {
-		t.Errorf("expected: %d -- actual: %d", len(expectedState[0]), len(actualState[0]))
+	if len(actualGeneration[0]) != len(expectedGeneration[0]) {
+		t.Errorf("expected: %d -- actual: %d", len(expectedGeneration[0]), len(actualGeneration[0]))
 		return
 	}
-	for i := 0; i < len(expectedState); i++ {
-		for j := 0; j < len(expectedState[i]); j++ {
-			if actualState[i][j] != expectedState[i][j] {
+	for i := 0; i < len(expectedGeneration); i++ {
+		for j := 0; j < len(expectedGeneration[i]); j++ {
+			if actualGeneration[i][j] != expectedGeneration[i][j] {
 				t.Errorf("expected: [%d][%d] [%t] -- actual: [%d][%d] [%t]",
-					i, j, expectedState[i][j], i, j, actualState[i][j])
+					i, j, expectedGeneration[i][j], i, j, actualGeneration[i][j])
 			}
 		}
 	}

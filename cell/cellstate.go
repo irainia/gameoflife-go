@@ -11,11 +11,11 @@ const (
 )
 
 type CellState struct {
-	currentState [][]bool
+	currentGeneration [][]bool
 }
 
-func (cellState *CellState) GetCurrentState() [][]bool {
-	return duplicateState(cellState.currentState)
+func (cellState *CellState) GetCurrentGeneration() [][]bool {
+	return duplicateState(cellState.currentGeneration)
 }
 
 func New(initialState [][]bool) (*CellState, error) {
@@ -24,15 +24,15 @@ func New(initialState [][]bool) (*CellState, error) {
 		return nil, err
 	}
 
-	var currentState [][]bool
+	var currentGeneration [][]bool
 	if isLivingCellExist(initialState) {
-		currentState = trimState(initialState)
+		currentGeneration = trimState(initialState)
 	} else {
-		currentState = duplicateState(initialState)
+		currentGeneration = duplicateState(initialState)
 	}
 
 	cellState := CellState{
-		currentState: currentState,
+		currentGeneration: currentGeneration,
 	}
 	return &cellState, nil
 }
