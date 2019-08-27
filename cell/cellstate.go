@@ -15,12 +15,7 @@ type CellState struct {
 }
 
 func (cellState *CellState) GetCurrentState() [][]bool {
-	currentState := make([][]bool, len(cellState.currentState))
-	for i := 0; i < len(cellState.currentState); i++ {
-		currentState[i] = make([]bool, len(cellState.currentState[i]))
-		copy(currentState[i], cellState.currentState[i])
-	}
-	return currentState
+	return duplicateState(cellState.currentState)
 }
 
 func New(initialState [][]bool) (*CellState, error) {
@@ -38,14 +33,18 @@ func New(initialState [][]bool) (*CellState, error) {
 		}
 	}
 
-	currentState := make([][]bool, len(initialState))
-	for i := 0; i < len(initialState); i++ {
-		currentState[i] = make([]bool, len(initialState[i]))
-		copy(currentState[i], initialState[i])
-	}
-
 	cellState := CellState{
-		currentState: currentState,
+		currentState: duplicateState(initialState),
 	}
 	return &cellState, nil
+}
+
+func duplicateState(originalState [][]bool) [][]bool {
+	duplicateState := make([][]bool, len(originalState))
+	for i := 0; i < len(originalState); i++ {
+		duplicateState[i] = make([]bool, len(originalState[i]))
+		copy(duplicateState[i], originalState[i])
+	}
+
+	return duplicateState
 }
