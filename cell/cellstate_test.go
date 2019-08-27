@@ -207,3 +207,34 @@ func TestGetCurrentStateShouldTrimBottomSideToNearestLivingCell(t *testing.T) {
 		}
 	}
 }
+
+func TestGetCurrentStateShouldTrimLeftSideToNearestLivingCell(t *testing.T) {
+	var initialState [][]bool = [][]bool{
+		{false, true, true},
+		{false, true, true},
+	}
+	cellState, _ := cell.New(initialState)
+	var expectedState [][]bool = [][]bool{
+		{true, true},
+		{true, true},
+	}
+
+	actualState := cellState.GetCurrentState()
+
+	if len(actualState) != len(expectedState) {
+		t.Errorf("expected: %d -- actual: %d", len(expectedState), len(actualState))
+		return
+	}
+	if len(actualState[0]) != len(expectedState[0]) {
+		t.Errorf("expected: %d -- actual: %d", len(expectedState[0]), len(actualState[0]))
+		return
+	}
+	for i := 0; i < len(expectedState); i++ {
+		for j := 0; j < len(expectedState[i]); j++ {
+			if actualState[i][j] != expectedState[i][j] {
+				t.Errorf("expected: [%d][%d] [%t] -- actual: [%d][%d] [%t]",
+					i, j, expectedState[i][j], i, j, actualState[i][j])
+			}
+		}
+	}
+}
