@@ -28,8 +28,12 @@ func New(initialState [][]bool) (*CellState, error) {
 	maxColIndex := 0
 	minRowIndex := len(initialState)
 	maxRowIndex := 0
+	isThereLivingCellExist := false
 	for i := 0; i < len(initialState); i++ {
 		for j := 0; j < len(initialState[i]); j++ {
+			if initialState[i][j] {
+				isThereLivingCellExist = true
+			}
 			if initialState[i][j] && j > maxColIndex {
 				maxColIndex = j
 			}
@@ -43,6 +47,13 @@ func New(initialState [][]bool) (*CellState, error) {
 				minRowIndex = i
 			}
 		}
+	}
+
+	if !isThereLivingCellExist {
+		cellState := CellState{
+			currentState: duplicateState(initialState),
+		}
+		return &cellState, nil
 	}
 
 	trimmedState := make([][]bool, maxRowIndex-minRowIndex+1)
