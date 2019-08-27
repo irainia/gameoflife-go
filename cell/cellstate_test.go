@@ -91,3 +91,29 @@ func TestGetCurrentStateShouldReturnInitialState(t *testing.T) {
 		}
 	}
 }
+
+func TestGetCurrentStateShouldBeImmutableOnCreation(t *testing.T) {
+	var initialState [][]bool = [][]bool{
+		{false, true, false},
+		{false, false, true},
+		{true, true, true},
+	}
+	cellState, _ := cell.New(initialState)
+	var expectedState [][]bool = [][]bool{
+		{false, true, false},
+		{false, false, true},
+		{true, true, true},
+	}
+
+	initialState[1][1] = !initialState[1][1]
+	actualState := cellState.GetCurrentState()
+
+	for i := 0; i < len(expectedState); i++ {
+		for j := 0; j < len(expectedState[i]); j++ {
+			if actualState[i][j] != expectedState[i][j] {
+				t.Errorf("expected: [%d][%d] [%t] -- actual: [%d][%d] [%t]",
+					i, j, expectedState[i][j], i, j, actualState[i][j])
+			}
+		}
+	}
+}

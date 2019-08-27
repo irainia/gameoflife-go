@@ -33,8 +33,14 @@ func New(initialState [][]bool) (*CellState, error) {
 		}
 	}
 
+	currentState := make([][]bool, len(initialState))
+	for i := 0; i < len(initialState); i++ {
+		currentState[i] = make([]bool, len(initialState[i]))
+		copy(currentState[i], initialState[i])
+	}
+
 	cellState := CellState{
-		currentState: initialState,
+		currentState: currentState,
 	}
 	return &cellState, nil
 }
