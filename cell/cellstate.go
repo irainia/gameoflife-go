@@ -25,16 +25,20 @@ func New(initialState [][]bool) (*CellState, error) {
 	}
 
 	maxColIndex := 0
+	maxRowIndex := 0
 	for i := 0; i < len(initialState); i++ {
 		for j := 0; j < len(initialState[i]); j++ {
 			if initialState[i][j] && j > maxColIndex {
 				maxColIndex = j
 			}
+			if initialState[i][j] && i > maxRowIndex {
+				maxRowIndex = i
+			}
 		}
 	}
 
-	trimmedState := make([][]bool, len(initialState))
-	for i := 0; i < len(initialState); i++ {
+	trimmedState := make([][]bool, maxRowIndex+1)
+	for i := 0; i <= maxRowIndex; i++ {
 		trimmedState[i] = make([]bool, maxColIndex+1)
 		for j := 0; j <= maxColIndex; j++ {
 			trimmedState[i][j] = initialState[i][j]
