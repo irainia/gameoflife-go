@@ -19,8 +19,8 @@ func (cellState *CellState) GetCurrentState() [][]bool {
 }
 
 func New(initialState [][]bool) (*CellState, error) {
-	isValid, err := isStateValid(initialState)
-	if !isValid || err != nil {
+	isStateValid, err := isStateValid(initialState)
+	if !isStateValid || err != nil {
 		return nil, err
 	}
 
