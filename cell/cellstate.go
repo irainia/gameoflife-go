@@ -24,45 +24,15 @@ func New(initialState [][]bool) (*CellState, error) {
 		return nil, err
 	}
 
-	isLivingCellExist := isLivingCellExist(initialState)
-	if !isLivingCellExist {
-		cellState := CellState{
-			currentState: duplicateState(initialState),
-		}
-		return &cellState, nil
-	}
-
-	minColIndex := len(initialState[0])
-	maxColIndex := 0
-	minRowIndex := len(initialState)
-	maxRowIndex := 0
-	for i := 0; i < len(initialState); i++ {
-		for j := 0; j < len(initialState[i]); j++ {
-			if initialState[i][j] && j > maxColIndex {
-				maxColIndex = j
-			}
-			if initialState[i][j] && i > maxRowIndex {
-				maxRowIndex = i
-			}
-			if initialState[i][j] && j < minColIndex {
-				minColIndex = j
-			}
-			if initialState[i][j] && i < minRowIndex {
-				minRowIndex = i
-			}
-		}
-	}
-
-	trimmedState := make([][]bool, maxRowIndex-minRowIndex+1)
-	for i := minRowIndex; i <= maxRowIndex; i++ {
-		trimmedState[i-minRowIndex] = make([]bool, maxColIndex-minColIndex+1)
-		for j := minColIndex; j <= maxColIndex; j++ {
-			trimmedState[i-minRowIndex][j-minColIndex] = initialState[i][j]
-		}
+	var currentState [][]bool
+	if isLivingCellExist(initialState) {
+		currentState = trimState(initialState)
+	} else {
+		currentState = duplicateState(initialState)
 	}
 
 	cellState := CellState{
-		currentState: trimmedState,
+		currentState: currentState,
 	}
 	return &cellState, nil
 }
@@ -105,4 +75,39 @@ func isLivingCellExist(state [][]bool) bool {
 	}
 
 	return false
+}
+
+func trimState(originalState [][]bool) [][]bool {
+	minRowIndex := len(originalState)
+	maxRowIndex := 0
+	minColIndex := len(originalState[0])
+	maxColIndex := 0
+	for i := 0; i < len(originalState); i++ {
+		for j := 0; j < len(originalState[i]); j++ {
+			if originalState[i][j] {
+				if i < minRowIndex {
+					minRowIndex = i
+				}
+				if i > maxRowIndex {
+					maxRowIndex = i
+				}
+				if j < minColIndex {
+					minColIndex = j
+				}
+				if j > maxColIndex {
+					maxColIndex = j
+				}
+			}
+		}
+	}
+
+	trimmedState := make([][]bool, maxRowIndex-minRowIndex+1)
+	for i := minRowIndex; i <= maxRowIndex; i++ {
+		trimmedState[i-minRowIndex] = make([]bool, maxColIndex-minColIndex+1)
+		for j := minColIndex; j <= maxColIndex; j++ {
+			trimmedState[i-minRowIndex][j-minColIndex] = originalState[i][j]
+		}
+	}
+
+	return trimmedState
 }
