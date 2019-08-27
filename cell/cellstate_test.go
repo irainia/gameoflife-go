@@ -70,3 +70,24 @@ func TestNewShouldReturnNilAndErrorForInitialStateNotRectangle(t *testing.T) {
 		t.Errorf("expected: %s -- actual: %s", expectedError.Error(), actualError.Error())
 	}
 }
+
+func TestGetCurrentStateShouldReturnInitialState(t *testing.T) {
+	var initialState [][]bool = [][]bool{
+		{false, true, false},
+		{false, false, true},
+		{true, true, true},
+	}
+	cellState, _ := cell.New(initialState)
+	var expectedState [][]bool = initialState
+
+	actualState := cellState.GetCurrentState()
+
+	for i := 0; i < len(expectedState); i++ {
+		for j := 0; j < len(expectedState[i]); j++ {
+			if actualState[i][j] != expectedState[i][j] {
+				t.Errorf("expected: [%d][%d] [%t] -- actual: [%d][%d] [%t]",
+					i, j, expectedState[i][j], i, j, actualState[i][j])
+			}
+		}
+	}
+}

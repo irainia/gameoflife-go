@@ -1,6 +1,8 @@
 package cell
 
-import "errors"
+import (
+	"errors"
+)
 
 const (
 	ArgumentNilError               = "argument passed is nil"
@@ -12,6 +14,10 @@ type CellState struct {
 	currentState [][]bool
 }
 
+func (cellState *CellState) GetCurrentState() [][]bool {
+	return cellState.currentState
+}
+
 func New(initialState [][]bool) (*CellState, error) {
 	if initialState == nil {
 		return nil, errors.New(ArgumentNilError)
@@ -19,5 +25,16 @@ func New(initialState [][]bool) (*CellState, error) {
 	if len(initialState) == 0 {
 		return nil, errors.New(ArgumentEmptyError)
 	}
-	return nil, errors.New(ArgumentShapeNotRectangleError)
+
+	colLength := len(initialState[0])
+	for i := 0; i < len(initialState); i++ {
+		if len(initialState[i]) != colLength {
+			return nil, errors.New(ArgumentShapeNotRectangleError)
+		}
+	}
+
+	cellState := CellState{
+		currentState: initialState,
+	}
+	return &cellState, nil
 }
