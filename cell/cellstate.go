@@ -18,7 +18,7 @@ func (cellState *CellState) GetCurrentGeneration() [][]bool {
 	return duplicateGeneration(cellState.currentGeneration)
 }
 
-func (cellstate *CellState) GetNextGeneration() *CellState {
+func (cellstate *CellState) GetNextState() *CellState {
 	currentGeneration := cellstate.GetCurrentGeneration()
 	expandedCurrentGeneration := expandGeneration(currentGeneration, 2)
 	nextGeneration := makeNextGeneration(expandedCurrentGeneration)
