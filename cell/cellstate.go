@@ -53,6 +53,9 @@ func (cellstate *CellState) GetNextGeneration() [][]bool {
 			if numOfNeighbors == 2 && tempCell[i][j] || numOfNeighbors == 3 {
 				nextTempCell[i][j] = true
 			}
+			if numOfNeighbors > 3 {
+				nextTempCell[i][j] = false
+			}
 		}
 	}
 
