@@ -59,9 +59,6 @@ func (cellstate *CellState) GetNextGeneration() [][]bool {
 		}
 	}
 
-	if !isLivingCellExist(nextTempCell) {
-		return make([][]bool, 0)
-	}
 	return trimState(nextTempCell)
 }
 
@@ -71,15 +68,8 @@ func New(initialState [][]bool) (*CellState, error) {
 		return nil, err
 	}
 
-	var currentGeneration [][]bool
-	if isLivingCellExist(initialState) {
-		currentGeneration = trimState(initialState)
-	} else {
-		currentGeneration = make([][]bool, 0)
-	}
-
 	cellState := CellState{
-		currentGeneration: currentGeneration,
+		currentGeneration: trimState(initialState),
 	}
 	return &cellState, nil
 }
@@ -103,6 +93,10 @@ func isStateValid(state [][]bool) (bool, error) {
 }
 
 func duplicateState(originalState [][]bool) [][]bool {
+	if !isLivingCellExist(originalState) {
+		return make([][]bool, 0)
+	}
+
 	duplicateState := make([][]bool, len(originalState))
 	for i := 0; i < len(originalState); i++ {
 		duplicateState[i] = make([]bool, len(originalState[i]))
@@ -125,6 +119,10 @@ func isLivingCellExist(state [][]bool) bool {
 }
 
 func trimState(originalState [][]bool) [][]bool {
+	if !isLivingCellExist(originalState) {
+		return make([][]bool, 0)
+	}
+
 	minRowIndex := len(originalState)
 	maxRowIndex := 0
 	minColIndex := len(originalState[0])
