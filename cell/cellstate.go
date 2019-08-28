@@ -19,21 +19,16 @@ func (cellState *CellState) GetCurrentGeneration() [][]bool {
 }
 
 func (cellstate *CellState) GetNextGeneration() [][]bool {
-	tempCell := make([][]bool, len(cellstate.currentGeneration)+4)
-	for i := 0; i < len(tempCell); i++ {
-		tempCell[i] = make([]bool, len(cellstate.currentGeneration[0])+4)
-		if i > 1 && i < len(tempCell)-2 {
-			copy(tempCell[i][2:], cellstate.currentGeneration[i-2])
-		}
+	currentGeneration := cellstate.GetCurrentGeneration()
+	expandedGeneration := expandState(currentGeneration, 2)
+
+	nextTempCell := make([][]bool, len(expandedGeneration))
+	for i := 0; i < len(expandedGeneration); i++ {
+		nextTempCell[i] = make([]bool, len(expandedGeneration[i]))
 	}
 
-	nextTempCell := make([][]bool, len(tempCell))
-	for i := 0; i < len(tempCell); i++ {
-		nextTempCell[i] = make([]bool, len(tempCell[i]))
-	}
-
-	for i := 1; i < len(tempCell)-1; i++ {
-		for j := 1; j < len(tempCell[i])-1; j++ {
+	for i := 1; i < len(expandedGeneration)-1; i++ {
+		for j := 1; j < len(expandedGeneration[i])-1; j++ {
 			numOfNeighbors := 0
 			for p := i - 1; p <= i+1; p++ {
 				for q := j - 1; q <= j+1; q++ {
@@ -41,7 +36,7 @@ func (cellstate *CellState) GetNextGeneration() [][]bool {
 						continue
 					}
 
-					if tempCell[p][q] {
+					if expandedGeneration[p][q] {
 						numOfNeighbors++
 					}
 				}
@@ -50,7 +45,7 @@ func (cellstate *CellState) GetNextGeneration() [][]bool {
 			if numOfNeighbors < 2 {
 				nextTempCell[i][j] = false
 			}
-			if numOfNeighbors == 2 && tempCell[i][j] || numOfNeighbors == 3 {
+			if numOfNeighbors == 2 && expandedGeneration[i][j] || numOfNeighbors == 3 {
 				nextTempCell[i][j] = true
 			}
 			if numOfNeighbors > 3 {
@@ -155,4 +150,16 @@ func trimState(originalState [][]bool) [][]bool {
 	}
 
 	return trimmedState
+}
+
+func expandState(originalState [][]bool, additionalEachSide int) [][]bool {
+	expandedState := make([][]bool, len(originalState)+additionalEachSide*2)
+	for i := 0; i < len(expandedState); i++ {
+		expandedState[i] = make([]bool, len(originalState[0])+additionalEachSide*2)
+		if i >= additionalEachSide && i < len(expandedState)-additionalEachSide {
+			copy(expandedState[i][additionalEachSide:], originalState[i-additionalEachSide])
+		}
+	}
+
+	return expandedState
 }
