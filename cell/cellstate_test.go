@@ -271,35 +271,18 @@ func TestGetCurrentGenerationShouldTrimTopSideToNearestLivingCell(t *testing.T) 
 	}
 }
 
-func TestGetCurrentGenerationShouldNotTrimForNoLivingcell(t *testing.T) {
+func TestGetCurrentGenerationShouldReturnEmptyNoLivingcell(t *testing.T) {
 	var initialGeneration [][]bool = [][]bool{
 		{false, false, false},
 		{false, false, false},
 		{false, false, false},
 	}
 	cellState, _ := cell.New(initialGeneration)
-	var expectedGeneration [][]bool = [][]bool{
-		{false, false, false},
-		{false, false, false},
-		{false, false, false},
-	}
+	var expectedGeneration [][]bool = make([][]bool, 0)
 
 	actualGeneration := cellState.GetCurrentGeneration()
 
 	if len(actualGeneration) != len(expectedGeneration) {
 		t.Errorf("expected: %d -- actual: %d", len(expectedGeneration), len(actualGeneration))
-		return
-	}
-	if len(actualGeneration[0]) != len(expectedGeneration[0]) {
-		t.Errorf("expected: %d -- actual: %d", len(expectedGeneration[0]), len(actualGeneration[0]))
-		return
-	}
-	for i := 0; i < len(expectedGeneration); i++ {
-		for j := 0; j < len(expectedGeneration[i]); j++ {
-			if actualGeneration[i][j] != expectedGeneration[i][j] {
-				t.Errorf("expected: [%d][%d] [%t] -- actual: [%d][%d] [%t]",
-					i, j, expectedGeneration[i][j], i, j, actualGeneration[i][j])
-			}
-		}
 	}
 }

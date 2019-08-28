@@ -28,7 +28,7 @@ func New(initialState [][]bool) (*CellState, error) {
 	if isLivingCellExist(initialState) {
 		currentGeneration = trimState(initialState)
 	} else {
-		currentGeneration = duplicateState(initialState)
+		currentGeneration = make([][]bool, 0)
 	}
 
 	cellState := CellState{
