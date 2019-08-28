@@ -20,41 +20,9 @@ func (cellState *CellState) GetCurrentGeneration() [][]bool {
 
 func (cellstate *CellState) GetNextGeneration() [][]bool {
 	currentGeneration := cellstate.GetCurrentGeneration()
-	expandedGeneration := expandState(currentGeneration, 2)
-
-	nextTempCell := make([][]bool, len(expandedGeneration))
-	for i := 0; i < len(expandedGeneration); i++ {
-		nextTempCell[i] = make([]bool, len(expandedGeneration[i]))
-	}
-
-	for i := 1; i < len(expandedGeneration)-1; i++ {
-		for j := 1; j < len(expandedGeneration[i])-1; j++ {
-			numOfNeighbors := 0
-			for p := i - 1; p <= i+1; p++ {
-				for q := j - 1; q <= j+1; q++ {
-					if p == i && q == j {
-						continue
-					}
-
-					if expandedGeneration[p][q] {
-						numOfNeighbors++
-					}
-				}
-			}
-
-			if numOfNeighbors < 2 {
-				nextTempCell[i][j] = false
-			}
-			if numOfNeighbors == 2 && expandedGeneration[i][j] || numOfNeighbors == 3 {
-				nextTempCell[i][j] = true
-			}
-			if numOfNeighbors > 3 {
-				nextTempCell[i][j] = false
-			}
-		}
-	}
-
-	return trimState(nextTempCell)
+	expandedCurrentGeneration := expandState(currentGeneration, 2)
+	nextGeneration := makeNextGeneration(expandedCurrentGeneration)
+	return nextGeneration
 }
 
 func New(initialState [][]bool) (*CellState, error) {
@@ -162,4 +130,49 @@ func expandState(originalState [][]bool, additionalEachSide int) [][]bool {
 	}
 
 	return expandedState
+}
+
+func makeEmptyState(row, column int) [][]bool {
+	emptyState := make([][]bool, row)
+	for i := 0; i < row; i++ {
+		emptyState[i] = make([]bool, column)
+	}
+
+	return emptyState
+}
+
+func makeNextGeneration(currentGeneration [][]bool) [][]bool {
+	row := len(currentGeneration)
+	column := len(currentGeneration[0])
+
+	newGeneration := makeEmptyState(row, column)
+
+	for i := 1; i < len(currentGeneration)-1; i++ {
+		for j := 1; j < len(currentGeneration[i])-1; j++ {
+			numOfNeighbors := 0
+			for p := i - 1; p <= i+1; p++ {
+				for q := j - 1; q <= j+1; q++ {
+					if p == i && q == j {
+						continue
+					}
+
+					if currentGeneration[p][q] {
+						numOfNeighbors++
+					}
+				}
+			}
+
+			if numOfNeighbors < 2 {
+				newGeneration[i][j] = false
+			}
+			if numOfNeighbors == 2 && currentGeneration[i][j] || numOfNeighbors == 3 {
+				newGeneration[i][j] = true
+			}
+			if numOfNeighbors > 3 {
+				newGeneration[i][j] = false
+			}
+		}
+	}
+
+	return trimState(newGeneration)
 }
