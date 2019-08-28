@@ -334,6 +334,20 @@ func TestGetNextGenerationShouldKillLivingCellWithMoreThanThreeNeighbors(t *test
 	}
 }
 
+func TestStringConvertTrueToO(t *testing.T) {
+	var initialGeneration [][]bool = [][]bool{
+		{true},
+	}
+	cellState, _ := cell.New(initialGeneration)
+	expectedString := "o"
+
+	actualString := cellState.String()
+
+	if actualString != expectedString {
+		t.Errorf("expected: %s -- actual: %s", expectedString, actualString)
+	}
+}
+
 func elementWiseCheck(expectedGeneration, actualGeneration [][]bool) error {
 	for i := 0; i < len(actualGeneration); i++ {
 		for j := 0; j < len(actualGeneration[i]); j++ {

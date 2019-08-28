@@ -29,6 +29,10 @@ func (cellState *CellState) GetNextState() *CellState {
 	return &nextState
 }
 
+func (cellState *CellState) String() string {
+	return "o"
+}
+
 func New(initialGeneration [][]bool) (*CellState, error) {
 	isValid, err := isGenerationValid(initialGeneration)
 	if !isValid || err != nil {
