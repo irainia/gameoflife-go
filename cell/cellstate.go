@@ -15,39 +15,39 @@ type CellState struct {
 }
 
 func (cellState *CellState) GetCurrentGeneration() [][]bool {
-	return duplicateState(cellState.currentGeneration)
+	return duplicateGeneration(cellState.currentGeneration)
 }
 
 func (cellstate *CellState) GetNextGeneration() [][]bool {
 	currentGeneration := cellstate.GetCurrentGeneration()
-	expandedCurrentGeneration := expandState(currentGeneration, 2)
+	expandedCurrentGeneration := expandGeneration(currentGeneration, 2)
 	nextGeneration := makeNextGeneration(expandedCurrentGeneration)
 	return nextGeneration
 }
 
-func New(initialState [][]bool) (*CellState, error) {
-	isStateValid, err := isStateValid(initialState)
-	if !isStateValid || err != nil {
+func New(initialGeneration [][]bool) (*CellState, error) {
+	isValid, err := isGenerationValid(initialGeneration)
+	if !isValid || err != nil {
 		return nil, err
 	}
 
 	cellState := CellState{
-		currentGeneration: trimState(initialState),
+		currentGeneration: trimGeneration(initialGeneration),
 	}
 	return &cellState, nil
 }
 
-func isStateValid(state [][]bool) (bool, error) {
-	if state == nil {
+func isGenerationValid(generation [][]bool) (bool, error) {
+	if generation == nil {
 		return false, errors.New(ArgumentNilError)
 	}
-	if len(state) == 0 {
+	if len(generation) == 0 {
 		return false, errors.New(ArgumentEmptyError)
 	}
 
-	colLength := len(state[0])
-	for i := 0; i < len(state); i++ {
-		if len(state[i]) != colLength {
+	colLength := len(generation[0])
+	for i := 0; i < len(generation); i++ {
+		if len(generation[i]) != colLength {
 			return false, errors.New(ArgumentShapeNotRectangleError)
 		}
 	}
@@ -55,24 +55,24 @@ func isStateValid(state [][]bool) (bool, error) {
 	return true, nil
 }
 
-func duplicateState(originalState [][]bool) [][]bool {
-	if !isLivingCellExist(originalState) {
+func duplicateGeneration(originalGeneration [][]bool) [][]bool {
+	if !isLivingCellExist(originalGeneration) {
 		return make([][]bool, 0)
 	}
 
-	duplicateState := make([][]bool, len(originalState))
-	for i := 0; i < len(originalState); i++ {
-		duplicateState[i] = make([]bool, len(originalState[i]))
-		copy(duplicateState[i], originalState[i])
+	duplicatedGeneration := make([][]bool, len(originalGeneration))
+	for i := 0; i < len(originalGeneration); i++ {
+		duplicatedGeneration[i] = make([]bool, len(originalGeneration[i]))
+		copy(duplicatedGeneration[i], originalGeneration[i])
 	}
 
-	return duplicateState
+	return duplicatedGeneration
 }
 
-func isLivingCellExist(state [][]bool) bool {
-	for i := 0; i < len(state); i++ {
-		for j := 0; j < len(state[i]); j++ {
-			if state[i][j] {
+func isLivingCellExist(generation [][]bool) bool {
+	for i := 0; i < len(generation); i++ {
+		for j := 0; j < len(generation[i]); j++ {
+			if generation[i][j] {
 				return true
 			}
 		}
@@ -81,18 +81,18 @@ func isLivingCellExist(state [][]bool) bool {
 	return false
 }
 
-func trimState(originalState [][]bool) [][]bool {
-	if !isLivingCellExist(originalState) {
+func trimGeneration(originalGeneration [][]bool) [][]bool {
+	if !isLivingCellExist(originalGeneration) {
 		return make([][]bool, 0)
 	}
 
-	minRowIndex := len(originalState)
+	minRowIndex := len(originalGeneration)
 	maxRowIndex := 0
-	minColIndex := len(originalState[0])
+	minColIndex := len(originalGeneration[0])
 	maxColIndex := 0
-	for i := 0; i < len(originalState); i++ {
-		for j := 0; j < len(originalState[i]); j++ {
-			if originalState[i][j] {
+	for i := 0; i < len(originalGeneration); i++ {
+		for j := 0; j < len(originalGeneration[i]); j++ {
+			if originalGeneration[i][j] {
 				if i < minRowIndex {
 					minRowIndex = i
 				}
@@ -109,43 +109,43 @@ func trimState(originalState [][]bool) [][]bool {
 		}
 	}
 
-	trimmedState := make([][]bool, maxRowIndex-minRowIndex+1)
+	trimmedGeneration := make([][]bool, maxRowIndex-minRowIndex+1)
 	for i := minRowIndex; i <= maxRowIndex; i++ {
-		trimmedState[i-minRowIndex] = make([]bool, maxColIndex-minColIndex+1)
+		trimmedGeneration[i-minRowIndex] = make([]bool, maxColIndex-minColIndex+1)
 		for j := minColIndex; j <= maxColIndex; j++ {
-			trimmedState[i-minRowIndex][j-minColIndex] = originalState[i][j]
+			trimmedGeneration[i-minRowIndex][j-minColIndex] = originalGeneration[i][j]
 		}
 	}
 
-	return trimmedState
+	return trimmedGeneration
 }
 
-func expandState(originalState [][]bool, additionalEachSide int) [][]bool {
-	expandedState := make([][]bool, len(originalState)+additionalEachSide*2)
-	for i := 0; i < len(expandedState); i++ {
-		expandedState[i] = make([]bool, len(originalState[0])+additionalEachSide*2)
-		if i >= additionalEachSide && i < len(expandedState)-additionalEachSide {
-			copy(expandedState[i][additionalEachSide:], originalState[i-additionalEachSide])
+func expandGeneration(originalGeneration [][]bool, additionalEachSide int) [][]bool {
+	expandedGeneration := make([][]bool, len(originalGeneration)+additionalEachSide*2)
+	for i := 0; i < len(expandedGeneration); i++ {
+		expandedGeneration[i] = make([]bool, len(originalGeneration[0])+additionalEachSide*2)
+		if i >= additionalEachSide && i < len(expandedGeneration)-additionalEachSide {
+			copy(expandedGeneration[i][additionalEachSide:], originalGeneration[i-additionalEachSide])
 		}
 	}
 
-	return expandedState
+	return expandedGeneration
 }
 
-func makeEmptyState(row, column int) [][]bool {
-	emptyState := make([][]bool, row)
+func makeEmptyGeneration(row, column int) [][]bool {
+	emptyGeneration := make([][]bool, row)
 	for i := 0; i < row; i++ {
-		emptyState[i] = make([]bool, column)
+		emptyGeneration[i] = make([]bool, column)
 	}
 
-	return emptyState
+	return emptyGeneration
 }
 
 func makeNextGeneration(currentGeneration [][]bool) [][]bool {
 	row := len(currentGeneration)
 	column := len(currentGeneration[0])
 
-	newGeneration := makeEmptyState(row, column)
+	newGeneration := makeEmptyGeneration(row, column)
 
 	for i := 1; i < len(currentGeneration)-1; i++ {
 		for j := 1; j < len(currentGeneration[i])-1; j++ {
@@ -168,5 +168,5 @@ func makeNextGeneration(currentGeneration [][]bool) [][]bool {
 		}
 	}
 
-	return trimState(newGeneration)
+	return trimGeneration(newGeneration)
 }
