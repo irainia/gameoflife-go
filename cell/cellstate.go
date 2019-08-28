@@ -14,12 +14,12 @@ type CellState struct {
 	currentGeneration [][]bool
 }
 
-func (cellState *CellState) GetCurrentGeneration() [][]bool {
+func (cellState *CellState) GetGeneration() [][]bool {
 	return duplicateGeneration(cellState.currentGeneration)
 }
 
 func (cellstate *CellState) GetNextState() *CellState {
-	currentGeneration := cellstate.GetCurrentGeneration()
+	currentGeneration := cellstate.GetGeneration()
 	expandedCurrentGeneration := expandGeneration(currentGeneration, 2)
 	nextGeneration := makeNextGeneration(expandedCurrentGeneration)
 

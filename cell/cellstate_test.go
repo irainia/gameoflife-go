@@ -81,7 +81,7 @@ func TestGetCurrentGenerationShouldReturnInitialGeneration(t *testing.T) {
 	cellState, _ := cell.New(initialGeneration)
 	var expectedGeneration [][]bool = initialGeneration
 
-	actualGeneration := cellState.GetCurrentGeneration()
+	actualGeneration := cellState.GetGeneration()
 
 	err := elementWiseCheck(expectedGeneration, actualGeneration)
 	if err != nil {
@@ -103,7 +103,7 @@ func TestGetCurrentGenerationShouldBeImmutableOnCreation(t *testing.T) {
 	}
 
 	initialGeneration[1][1] = !initialGeneration[1][1]
-	actualGeneration := cellState.GetCurrentGeneration()
+	actualGeneration := cellState.GetGeneration()
 
 	err := elementWiseCheck(expectedGeneration, actualGeneration)
 	if err != nil {
@@ -124,9 +124,9 @@ func TestGetCurrentGenerationShouldBeImmutableOnRetrieval(t *testing.T) {
 		{true, true, true},
 	}
 
-	temporaryState := cellState.GetCurrentGeneration()
+	temporaryState := cellState.GetGeneration()
 	temporaryState[1][1] = !temporaryState[1][1]
-	actualGeneration := cellState.GetCurrentGeneration()
+	actualGeneration := cellState.GetGeneration()
 
 	err := elementWiseCheck(expectedGeneration, actualGeneration)
 	if err != nil {
@@ -145,7 +145,7 @@ func TestGetCurrentGenerationShouldTrimRightSideToNearestLivingCell(t *testing.T
 		{true, true},
 	}
 
-	actualGeneration := cellState.GetCurrentGeneration()
+	actualGeneration := cellState.GetGeneration()
 
 	if len(actualGeneration) != len(expectedGeneration) {
 		t.Errorf("expected: %d -- actual: %d", len(expectedGeneration), len(actualGeneration))
@@ -173,7 +173,7 @@ func TestGetCurrentGenerationShouldTrimBottomSideToNearestLivingCell(t *testing.
 		{true, true},
 	}
 
-	actualGeneration := cellState.GetCurrentGeneration()
+	actualGeneration := cellState.GetGeneration()
 
 	if len(actualGeneration) != len(expectedGeneration) {
 		t.Errorf("expected: %d -- actual: %d", len(expectedGeneration), len(actualGeneration))
@@ -200,7 +200,7 @@ func TestGetCurrentGenerationShouldTrimLeftSideToNearestLivingCell(t *testing.T)
 		{true, true},
 	}
 
-	actualGeneration := cellState.GetCurrentGeneration()
+	actualGeneration := cellState.GetGeneration()
 
 	if len(actualGeneration) != len(expectedGeneration) {
 		t.Errorf("expected: %d -- actual: %d", len(expectedGeneration), len(actualGeneration))
@@ -228,7 +228,7 @@ func TestGetCurrentGenerationShouldTrimTopSideToNearestLivingCell(t *testing.T) 
 		{true, true},
 	}
 
-	actualGeneration := cellState.GetCurrentGeneration()
+	actualGeneration := cellState.GetGeneration()
 
 	if len(actualGeneration) != len(expectedGeneration) {
 		t.Errorf("expected: %d -- actual: %d", len(expectedGeneration), len(actualGeneration))
@@ -253,7 +253,7 @@ func TestGetCurrentGenerationShouldReturnEmptyNoLivingcell(t *testing.T) {
 	cellState, _ := cell.New(initialGeneration)
 	var expectedGeneration [][]bool = make([][]bool, 0)
 
-	actualGeneration := cellState.GetCurrentGeneration()
+	actualGeneration := cellState.GetGeneration()
 
 	if len(actualGeneration) != len(expectedGeneration) {
 		t.Errorf("expected: %d -- actual: %d", len(expectedGeneration), len(actualGeneration))
@@ -267,7 +267,7 @@ func TestGetNextGenerationShouldKillLivingCellWithLessThanTwoNeighbors(t *testin
 	cellState, _ := cell.New(initialGeneration)
 	var expectedGeneration [][]bool = make([][]bool, 0)
 
-	actualGeneration := cellState.GetNextState().GetCurrentGeneration()
+	actualGeneration := cellState.GetNextState().GetGeneration()
 
 	if len(actualGeneration) != len(expectedGeneration) {
 		t.Errorf("expected: %d -- actual: %d", len(expectedGeneration), len(actualGeneration))
@@ -287,7 +287,7 @@ func TestGetNextGenerationShouldSurviveLivingCellWithTwoNeighbors(t *testing.T) 
 		{false, true, false},
 	}
 
-	actualGeneration := cellState.GetNextState().GetCurrentGeneration()
+	actualGeneration := cellState.GetNextState().GetGeneration()
 
 	err := elementWiseCheck(expectedGeneration, actualGeneration)
 	if err != nil {
@@ -306,7 +306,7 @@ func TestGetNextGenerationShouldSurviveOrReproduceLivingCellWithThreeNeighbors(t
 		{true},
 	}
 
-	actualGeneration := cellState.GetNextState().GetCurrentGeneration()
+	actualGeneration := cellState.GetNextState().GetGeneration()
 
 	err := elementWiseCheck(expectedGeneration, actualGeneration)
 	if err != nil {
@@ -326,7 +326,7 @@ func TestGetNextGenerationShouldKillLivingCellWithMoreThanThreeNeighbors(t *test
 		{true, false},
 	}
 
-	actualGeneration := cellState.GetNextState().GetCurrentGeneration()
+	actualGeneration := cellState.GetNextState().GetGeneration()
 
 	err := elementWiseCheck(expectedGeneration, actualGeneration)
 	if err != nil {
