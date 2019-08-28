@@ -1,6 +1,7 @@
 package cell
 
 import (
+	"bytes"
 	"errors"
 )
 
@@ -30,7 +31,19 @@ func (cellState *CellState) GetNextState() *CellState {
 }
 
 func (cellState *CellState) String() string {
-	return "o"
+	currentGeneration := cellState.GetGeneration()
+	var buffer bytes.Buffer
+	for i := 0; i < len(currentGeneration); i++ {
+		for j := 0; j < len(currentGeneration[i]); j++ {
+			if currentGeneration[i][j] {
+				buffer.WriteString("o")
+			} else {
+				buffer.WriteString("-")
+			}
+		}
+	}
+
+	return buffer.String()
 }
 
 func New(initialGeneration [][]bool) (*CellState, error) {
