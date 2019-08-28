@@ -19,7 +19,49 @@ func (cellState *CellState) GetCurrentGeneration() [][]bool {
 }
 
 func (cellstate *CellState) GetNextGeneration() [][]bool {
-	return make([][]bool, 0)
+	tempCell := make([][]bool, len(cellstate.currentGeneration)+2)
+	tempCell[0] = make([]bool, len(cellstate.currentGeneration[0])+2)
+	for i := 0; i < len(cellstate.currentGeneration); i++ {
+		tempCell[i+1] = make([]bool, len(cellstate.currentGeneration[i])+2)
+		copy(tempCell[i+1][1:], cellstate.currentGeneration[i])
+	}
+	tempCell[len(cellstate.currentGeneration)+1] = make([]bool, len(cellstate.currentGeneration[0])+2)
+
+	nextTempCell := make([][]bool, len(tempCell))
+	for i := 0; i < len(tempCell); i++ {
+		nextTempCell[i] = make([]bool, len(tempCell[i]))
+	}
+
+	for i := 1; i < len(tempCell)-1; i++ {
+		for j := 1; j < len(tempCell[i])-1; j++ {
+			if tempCell[i][j] {
+				numOfNeighbors := 0
+				for p := i - 1; p <= i+1; p++ {
+					for q := j - 1; q <= j+1; q++ {
+						if p == i && q == j {
+							continue
+						}
+
+						if tempCell[p][q] {
+							numOfNeighbors++
+						}
+					}
+				}
+
+				if numOfNeighbors < 2 {
+					nextTempCell[i][j] = false
+				}
+				if numOfNeighbors == 2 {
+					nextTempCell[i][j] = true
+				}
+			}
+		}
+	}
+
+	if !isLivingCellExist(nextTempCell) {
+		return make([][]bool, 0)
+	}
+	return trimState(nextTempCell)
 }
 
 func New(initialState [][]bool) (*CellState, error) {

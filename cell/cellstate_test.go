@@ -300,3 +300,28 @@ func TestGetNextGenerationShouldKillLivingCellWithLessThanTwoNeighbors(t *testin
 		t.Errorf("expected: %d -- actual: %d", len(expectedGeneration), len(actualGeneration))
 	}
 }
+
+func TestGetNextGenerationShouldSurviveLivingCellWithTwoNeighbors(t *testing.T) {
+	var initialGeneration [][]bool = [][]bool{
+		{false, true, false},
+		{true, false, true},
+		{false, true, false},
+	}
+	cellState, _ := cell.New(initialGeneration)
+	var expectedGeneration [][]bool = [][]bool{
+		{false, true, false},
+		{true, false, true},
+		{false, true, false},
+	}
+
+	actualGeneration := cellState.GetNextGeneration()
+
+	for i := 0; i < len(expectedGeneration); i++ {
+		for j := 0; j < len(expectedGeneration[i]); j++ {
+			if actualGeneration[i][j] != expectedGeneration[i][j] {
+				t.Errorf("expected: [%d][%d] [%t] -- actual: [%d][%d] [%t]",
+					i, j, expectedGeneration[i][j], i, j, actualGeneration[i][j])
+			}
+		}
+	}
+}
