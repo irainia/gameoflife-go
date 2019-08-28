@@ -286,3 +286,17 @@ func TestGetCurrentGenerationShouldReturnEmptyNoLivingcell(t *testing.T) {
 		t.Errorf("expected: %d -- actual: %d", len(expectedGeneration), len(actualGeneration))
 	}
 }
+
+func TestGetNextGenerationShouldKillLivingCellWithLessThanTwoNeighbors(t *testing.T) {
+	var initialGeneration [][]bool = [][]bool{
+		{true, true},
+	}
+	cellState, _ := cell.New(initialGeneration)
+	var expectedGeneration [][]bool = make([][]bool, 0)
+
+	actualGeneration := cellState.GetNextGeneration()
+
+	if len(actualGeneration) != len(expectedGeneration) {
+		t.Errorf("expected: %d -- actual: %d", len(expectedGeneration), len(actualGeneration))
+	}
+}

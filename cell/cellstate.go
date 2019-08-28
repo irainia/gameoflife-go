@@ -18,6 +18,10 @@ func (cellState *CellState) GetCurrentGeneration() [][]bool {
 	return duplicateState(cellState.currentGeneration)
 }
 
+func (cellstate *CellState) GetNextGeneration() [][]bool {
+	return make([][]bool, 0)
+}
+
 func New(initialState [][]bool) (*CellState, error) {
 	isStateValid, err := isStateValid(initialState)
 	if !isStateValid || err != nil {
