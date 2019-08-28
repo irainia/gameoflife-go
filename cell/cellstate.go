@@ -162,14 +162,8 @@ func makeNextGeneration(currentGeneration [][]bool) [][]bool {
 				}
 			}
 
-			if numOfNeighbors < 2 {
-				newGeneration[i][j] = false
-			}
 			if numOfNeighbors == 2 && currentGeneration[i][j] || numOfNeighbors == 3 {
 				newGeneration[i][j] = true
-			}
-			if numOfNeighbors > 3 {
-				newGeneration[i][j] = false
 			}
 		}
 	}
