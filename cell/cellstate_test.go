@@ -2,6 +2,7 @@ package cell_test
 
 import (
 	"errors"
+	"fmt"
 	"testing"
 
 	"github.com/Irainia/gameoflife-go/cell"
@@ -82,13 +83,9 @@ func TestGetCurrentGenerationShouldReturnInitialGeneration(t *testing.T) {
 
 	actualGeneration := cellState.GetCurrentGeneration()
 
-	for i := 0; i < len(expectedGeneration); i++ {
-		for j := 0; j < len(expectedGeneration[i]); j++ {
-			if actualGeneration[i][j] != expectedGeneration[i][j] {
-				t.Errorf("expected: [%d][%d] [%t] -- actual: [%d][%d] [%t]",
-					i, j, expectedGeneration[i][j], i, j, actualGeneration[i][j])
-			}
-		}
+	err := elementWiseCheck(expectedGeneration, actualGeneration)
+	if err != nil {
+		t.Error(err.Error())
 	}
 }
 
@@ -108,13 +105,9 @@ func TestGetCurrentGenerationShouldBeImmutableOnCreation(t *testing.T) {
 	initialGeneration[1][1] = !initialGeneration[1][1]
 	actualGeneration := cellState.GetCurrentGeneration()
 
-	for i := 0; i < len(expectedGeneration); i++ {
-		for j := 0; j < len(expectedGeneration[i]); j++ {
-			if actualGeneration[i][j] != expectedGeneration[i][j] {
-				t.Errorf("expected: [%d][%d] [%t] -- actual: [%d][%d] [%t]",
-					i, j, expectedGeneration[i][j], i, j, actualGeneration[i][j])
-			}
-		}
+	err := elementWiseCheck(expectedGeneration, actualGeneration)
+	if err != nil {
+		t.Error(err.Error())
 	}
 }
 
@@ -135,13 +128,9 @@ func TestGetCurrentGenerationShouldBeImmutableOnRetrieval(t *testing.T) {
 	temporaryState[1][1] = !temporaryState[1][1]
 	actualGeneration := cellState.GetCurrentGeneration()
 
-	for i := 0; i < len(expectedGeneration); i++ {
-		for j := 0; j < len(expectedGeneration[i]); j++ {
-			if actualGeneration[i][j] != expectedGeneration[i][j] {
-				t.Errorf("expected: [%d][%d] [%t] -- actual: [%d][%d] [%t]",
-					i, j, expectedGeneration[i][j], i, j, actualGeneration[i][j])
-			}
-		}
+	err := elementWiseCheck(expectedGeneration, actualGeneration)
+	if err != nil {
+		t.Error(err.Error())
 	}
 }
 
@@ -166,13 +155,9 @@ func TestGetCurrentGenerationShouldTrimRightSideToNearestLivingCell(t *testing.T
 		t.Errorf("expected: %d -- actual: %d", len(expectedGeneration[0]), len(actualGeneration[0]))
 		return
 	}
-	for i := 0; i < len(expectedGeneration); i++ {
-		for j := 0; j < len(expectedGeneration[i]); j++ {
-			if actualGeneration[i][j] != expectedGeneration[i][j] {
-				t.Errorf("expected: [%d][%d] [%t] -- actual: [%d][%d] [%t]",
-					i, j, expectedGeneration[i][j], i, j, actualGeneration[i][j])
-			}
-		}
+	err := elementWiseCheck(expectedGeneration, actualGeneration)
+	if err != nil {
+		t.Error(err.Error())
 	}
 }
 
@@ -198,13 +183,9 @@ func TestGetCurrentGenerationShouldTrimBottomSideToNearestLivingCell(t *testing.
 		t.Errorf("expected: %d -- actual: %d", len(expectedGeneration[0]), len(actualGeneration[0]))
 		return
 	}
-	for i := 0; i < len(expectedGeneration); i++ {
-		for j := 0; j < len(expectedGeneration[i]); j++ {
-			if actualGeneration[i][j] != expectedGeneration[i][j] {
-				t.Errorf("expected: [%d][%d] [%t] -- actual: [%d][%d] [%t]",
-					i, j, expectedGeneration[i][j], i, j, actualGeneration[i][j])
-			}
-		}
+	err := elementWiseCheck(expectedGeneration, actualGeneration)
+	if err != nil {
+		t.Error(err.Error())
 	}
 }
 
@@ -229,13 +210,9 @@ func TestGetCurrentGenerationShouldTrimLeftSideToNearestLivingCell(t *testing.T)
 		t.Errorf("expected: %d -- actual: %d", len(expectedGeneration[0]), len(actualGeneration[0]))
 		return
 	}
-	for i := 0; i < len(expectedGeneration); i++ {
-		for j := 0; j < len(expectedGeneration[i]); j++ {
-			if actualGeneration[i][j] != expectedGeneration[i][j] {
-				t.Errorf("expected: [%d][%d] [%t] -- actual: [%d][%d] [%t]",
-					i, j, expectedGeneration[i][j], i, j, actualGeneration[i][j])
-			}
-		}
+	err := elementWiseCheck(expectedGeneration, actualGeneration)
+	if err != nil {
+		t.Error(err.Error())
 	}
 }
 
@@ -261,13 +238,9 @@ func TestGetCurrentGenerationShouldTrimTopSideToNearestLivingCell(t *testing.T) 
 		t.Errorf("expected: %d -- actual: %d", len(expectedGeneration[0]), len(actualGeneration[0]))
 		return
 	}
-	for i := 0; i < len(expectedGeneration); i++ {
-		for j := 0; j < len(expectedGeneration[i]); j++ {
-			if actualGeneration[i][j] != expectedGeneration[i][j] {
-				t.Errorf("expected: [%d][%d] [%t] -- actual: [%d][%d] [%t]",
-					i, j, expectedGeneration[i][j], i, j, actualGeneration[i][j])
-			}
-		}
+	err := elementWiseCheck(expectedGeneration, actualGeneration)
+	if err != nil {
+		t.Error(err.Error())
 	}
 }
 
@@ -316,13 +289,9 @@ func TestGetNextGenerationShouldSurviveLivingCellWithTwoNeighbors(t *testing.T) 
 
 	actualGeneration := cellState.GetNextGeneration()
 
-	for i := 0; i < len(expectedGeneration); i++ {
-		for j := 0; j < len(expectedGeneration[i]); j++ {
-			if actualGeneration[i][j] != expectedGeneration[i][j] {
-				t.Errorf("expected: [%d][%d] [%t] -- actual: [%d][%d] [%t]",
-					i, j, expectedGeneration[i][j], i, j, actualGeneration[i][j])
-			}
-		}
+	err := elementWiseCheck(expectedGeneration, actualGeneration)
+	if err != nil {
+		t.Error(err.Error())
 	}
 }
 
@@ -339,13 +308,9 @@ func TestGetNextGenerationShouldSurviveOrReproduceLivingCellWithThreeNeighbors(t
 
 	actualGeneration := cellState.GetNextGeneration()
 
-	for i := 0; i < len(expectedGeneration); i++ {
-		for j := 0; j < len(expectedGeneration[i]); j++ {
-			if actualGeneration[i][j] != expectedGeneration[i][j] {
-				t.Errorf("expected: [%d][%d] [%t] -- actual: [%d][%d] [%t]",
-					i, j, expectedGeneration[i][j], i, j, actualGeneration[i][j])
-			}
-		}
+	err := elementWiseCheck(expectedGeneration, actualGeneration)
+	if err != nil {
+		t.Error(err.Error())
 	}
 }
 
@@ -363,12 +328,21 @@ func TestGetNextGenerationShouldKillLivingCellWithMoreThanThreeNeighbors(t *test
 
 	actualGeneration := cellState.GetNextGeneration()
 
-	for i := 0; i < len(expectedGeneration); i++ {
-		for j := 0; j < len(expectedGeneration[i]); j++ {
+	err := elementWiseCheck(expectedGeneration, actualGeneration)
+	if err != nil {
+		t.Error(err.Error())
+	}
+}
+
+func elementWiseCheck(expectedGeneration, actualGeneration [][]bool) error {
+	for i := 0; i < len(actualGeneration); i++ {
+		for j := 0; j < len(actualGeneration[i]); j++ {
 			if actualGeneration[i][j] != expectedGeneration[i][j] {
-				t.Errorf("expected: [%d][%d] [%t] -- actual: [%d][%d] [%t]",
-					i, j, expectedGeneration[i][j], i, j, actualGeneration[i][j])
+				return errors.New(fmt.Sprintf("expected: [%d][%d] [%t] -- actual: [%d][%d] [%t]",
+					i, j, expectedGeneration[i][j], i, j, actualGeneration[i][j]))
 			}
 		}
 	}
+
+	return nil
 }
