@@ -41,6 +41,10 @@ func (cellState *CellState) String() string {
 				buffer.WriteString("-")
 			}
 		}
+
+		if i < len(currentGeneration)-1 {
+			buffer.WriteString("\n")
+		}
 	}
 
 	return buffer.String()
