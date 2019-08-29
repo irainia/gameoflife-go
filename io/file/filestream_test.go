@@ -9,7 +9,7 @@ import (
 
 func TestNewShouldReturnNilAndErrorForEmptyPath(t *testing.T) {
 	var expectedFileStream *file.FileStream = nil
-	var expectedError error = errors.New(file.ArgumentEmptyError)
+	var expectedError error = errors.New(file.PathEmptyError)
 
 	actualFileStream, actualError := file.New("")
 
