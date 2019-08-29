@@ -6,9 +6,9 @@ import (
 )
 
 const (
-	ArgumentNilError               = "argument passed is nil"
-	ArgumentEmptyError             = "argument passed is empty"
-	ArgumentShapeNotRectangleError = "argument shape is not rectangle"
+	GenerationNilError               = "generation passed is nil"
+	GenerationEmptyError             = "generation passed is empty"
+	GenerationShapeNotRectangleError = "generation shape is not rectangle"
 )
 
 type CellState struct {
@@ -64,16 +64,16 @@ func New(initialGeneration [][]bool) (*CellState, error) {
 
 func isGenerationValid(generation [][]bool) (bool, error) {
 	if generation == nil {
-		return false, errors.New(ArgumentNilError)
+		return false, errors.New(GenerationNilError)
 	}
 	if len(generation) == 0 {
-		return false, errors.New(ArgumentEmptyError)
+		return false, errors.New(GenerationEmptyError)
 	}
 
 	colLength := len(generation[0])
 	for i := 0; i < len(generation); i++ {
 		if len(generation[i]) != colLength {
-			return false, errors.New(ArgumentShapeNotRectangleError)
+			return false, errors.New(GenerationShapeNotRectangleError)
 		}
 	}
 

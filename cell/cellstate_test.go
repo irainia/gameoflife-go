@@ -10,7 +10,7 @@ import (
 
 func TestNewShouldReturnNilAndErrorForInitialGenerationNil(t *testing.T) {
 	var expectedCellState *cell.CellState = nil
-	var expectedError error = errors.New(cell.ArgumentNilError)
+	var expectedError error = errors.New(cell.GenerationNilError)
 
 	actualCellState, actualError := cell.New(nil)
 
@@ -29,7 +29,7 @@ func TestNewShouldReturnNilAndErrorForInitialGenerationNil(t *testing.T) {
 
 func TestNewShouldReturnNilAndErrorForInitialGenerationEmpty(t *testing.T) {
 	var expectedCellState *cell.CellState = nil
-	var expectedError error = errors.New(cell.ArgumentEmptyError)
+	var expectedError error = errors.New(cell.GenerationEmptyError)
 	var dim int = 0
 	initialGeneration := make([][]bool, dim)
 
@@ -55,7 +55,7 @@ func TestNewShouldReturnNilAndErrorForInitialGenerationNotRectangle(t *testing.T
 		{true, true},
 	}
 	var expectedCellState *cell.CellState = nil
-	var expectedError = errors.New(cell.ArgumentShapeNotRectangleError)
+	var expectedError = errors.New(cell.GenerationShapeNotRectangleError)
 
 	actualGeneration, actualError := cell.New(initialGeneration)
 
