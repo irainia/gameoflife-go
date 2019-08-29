@@ -1,6 +1,10 @@
 package file
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+	"strings"
+)
 
 const (
 	FileExtension = ".cell"
@@ -18,5 +22,12 @@ func New(path string) (*FileStream, error) {
 	if path == "" {
 		return nil, errors.New(PathEmptyError)
 	}
-	return nil, errors.New(InvalidExtensionError)
+
+	splitPath := strings.Split(path, ".")
+	if fmt.Sprintf(".%s", splitPath[len(splitPath)-1]) != FileExtension {
+		return nil, errors.New(InvalidExtensionError)
+	}
+
+	var fileStream = FileStream{}
+	return &fileStream, nil
 }
