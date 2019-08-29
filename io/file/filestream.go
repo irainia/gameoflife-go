@@ -3,12 +3,20 @@ package file
 import "errors"
 
 const (
-	PathEmptyError = "path passed is empty"
+	FileExtension = ".cell"
+)
+
+const (
+	PathEmptyError        = "path passed is empty"
+	InvalidExtensionError = "invalid file extension"
 )
 
 type FileStream struct {
 }
 
 func New(path string) (*FileStream, error) {
-	return nil, errors.New(PathEmptyError)
+	if path == "" {
+		return nil, errors.New(PathEmptyError)
+	}
+	return nil, errors.New(InvalidExtensionError)
 }
