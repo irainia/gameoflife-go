@@ -17,7 +17,7 @@ const (
 	InvalidExtensionError = "invalid file extension"
 	NotFoundFileError     = "file is not found"
 	EmptyFileError        = "file is empty"
-	InvalidFormatError    = "format is invalid"
+	InvalidFormatError    = "format is invalid ('o': true and '-': false)"
 )
 
 type FileStream struct {
