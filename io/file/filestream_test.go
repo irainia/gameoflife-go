@@ -28,8 +28,8 @@ var (
 )
 
 const (
-	emptyGeneration   string = ""
-	invalidGeneration string = "o--ox"
+	emptyGenerationString   string = ""
+	invalidGenerationString string = "o--ox"
 )
 
 func TestMain(m *testing.M) {
@@ -48,13 +48,13 @@ func setup() {
 	}
 
 	path = fmt.Sprintf("%s%s", cellDirectory, emptyCell)
-	err = ioutil.WriteFile(path, []byte(emptyGeneration), os.ModePerm)
+	err = ioutil.WriteFile(path, []byte(emptyGenerationString), os.ModePerm)
 	if err != nil {
 		panic(err)
 	}
 
 	path = fmt.Sprintf("%s%s", cellDirectory, invalidCell)
-	err = ioutil.WriteFile(path, []byte(invalidGeneration), os.ModePerm)
+	err = ioutil.WriteFile(path, []byte(invalidGenerationString), os.ModePerm)
 	if err != nil {
 		panic(err)
 	}
