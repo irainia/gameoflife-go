@@ -18,6 +18,7 @@ const (
 	NotFoundFileError     = "file is not found"
 	EmptyFileError        = "file is empty"
 	InvalidFormatError    = "format is invalid ('o': true and '-': false)"
+	NilGenerationError    = "generation is nil"
 )
 
 type FileStream struct {
@@ -50,6 +51,10 @@ func (fileStream *FileStream) Read() ([][]bool, error) {
 	}
 
 	return outputGeneration, nil
+}
+
+func (fileStream *FileStream) Write(generation [][]bool) error {
+	return errors.New(NilGenerationError)
 }
 
 func New(path string) (*FileStream, error) {

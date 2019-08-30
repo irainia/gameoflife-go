@@ -225,3 +225,20 @@ func TestReadShouldReturnGenerationAndNilForValidFile(t *testing.T) {
 		}
 	}
 }
+
+func TestWriteShouldReturnErrorForNilGeneration(t *testing.T) {
+	path := fmt.Sprintf("%s%s", cellDirectory, gliderCell)
+	fileStream, _ := file.New(path)
+	var nilGeneration [][]bool = nil
+	var expectedError error = errors.New(file.NilGenerationError)
+
+	actualError := fileStream.Write(nilGeneration)
+
+	if actualError == nil {
+		t.Error("expected: not nil -- actual: nil")
+		return
+	}
+	if actualError.Error() != expectedError.Error() {
+		t.Errorf("expected: %s -- actual: %s", expectedError.Error(), actualError.Error())
+	}
+}
