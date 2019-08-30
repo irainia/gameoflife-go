@@ -84,6 +84,12 @@ func teardown() {
 	if err != nil {
 		panic(err)
 	}
+
+	path = fmt.Sprintf("%s%s", cellDirectory, gliderCell)
+	err = os.Remove(path)
+	if err != nil {
+		panic(err)
+	}
 }
 
 func TestNewShouldReturnNilAndErrorForEmptyPath(t *testing.T) {
