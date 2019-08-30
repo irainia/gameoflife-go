@@ -34,7 +34,22 @@ func (fileStream *FileStream) Read() ([][]bool, error) {
 		return nil, errors.New(EmptyFileError)
 	}
 
-	return nil, errors.New(InvalidFormatError)
+	splitGeneration := strings.Split(string(readGeneration), "\n")
+	outputGeneration := make([][]bool, len(splitGeneration))
+	for i := 0; i < len(splitGeneration); i++ {
+		outputGeneration[i] = make([]bool, len(splitGeneration[i]))
+		for j := 0; j < len(splitGeneration[i]); j++ {
+			if splitGeneration[i][j] == 'o' {
+				outputGeneration[i][j] = true
+			} else if splitGeneration[i][j] == '-' {
+				outputGeneration[i][j] = false
+			} else {
+				return nil, errors.New(InvalidFormatError)
+			}
+		}
+	}
+
+	return outputGeneration, nil
 }
 
 func New(path string) (*FileStream, error) {

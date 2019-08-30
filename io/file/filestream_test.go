@@ -193,3 +193,28 @@ func TestReadShouldReturnNilAndErrorForInvalidFormat(t *testing.T) {
 		t.Errorf("expected: %s -- actual: %s", expectedError.Error(), actualError.Error())
 	}
 }
+
+func TestReadShouldReturnGenerationAndNilForValidFile(t *testing.T) {
+	fileStream, _ := file.New(tubCell)
+	expectedGeneration := tubGeneration
+	var expectedError error = nil
+
+	actualGeneration, actualError := fileStream.Read()
+
+	if actualGeneration == nil {
+		t.Error("expected: not nil -- actual: nil")
+		return
+	}
+	if actualError != expectedError {
+		t.Errorf("expected: nil -- actual: %s", actualError.Error())
+		return
+	}
+	for i := 0; i < len(actualGeneration); i++ {
+		for j := 0; j < len(actualGeneration[i]); j++ {
+			if actualGeneration[i][j] != expectedGeneration[i][j] {
+				t.Errorf("expected: [%d][%d] [%t] -- actual: [%d][%d] [%t]",
+					i, j, expectedGeneration[i][j], i, j, actualGeneration[i][j])
+			}
+		}
+	}
+}
