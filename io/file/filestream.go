@@ -13,9 +13,14 @@ const (
 const (
 	PathEmptyError        = "path passed is empty"
 	InvalidExtensionError = "invalid file extension"
+	NotFoundFileError     = "file is not found"
 )
 
 type FileStream struct {
+}
+
+func (fileStream *FileStream) Read() ([][]bool, error) {
+	return nil, errors.New(NotFoundFileError)
 }
 
 func New(path string) (*FileStream, error) {

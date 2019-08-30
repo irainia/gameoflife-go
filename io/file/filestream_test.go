@@ -133,3 +133,23 @@ func TestNewShouldReturnFileStreamAndNilForValidFileExtension(t *testing.T) {
 		t.Errorf("expected: nil -- actual: %s", actualError)
 	}
 }
+
+func TestReadShouldReturnNilAndErrorForNonExistentFile(t *testing.T) {
+	var nonExistentFile = "nonexistent.cell"
+	fileStream, _ := file.New(nonExistentFile)
+	var expectedError error = errors.New(file.NotFoundFileError)
+
+	actualGeneration, actualError := fileStream.Read()
+
+	if actualGeneration != nil {
+		t.Error("expected: nil -- actual: not nil")
+		return
+	}
+	if actualError == nil {
+		t.Error("expected: not nil -- actual: nil")
+		return
+	}
+	if actualError.Error() != expectedError.Error() {
+		t.Errorf("expected: %s -- actual: %s", expectedError.Error(), actualError.Error())
+	}
+}
