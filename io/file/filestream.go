@@ -3,6 +3,7 @@ package file
 import (
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"strings"
 )
@@ -16,6 +17,7 @@ const (
 	InvalidExtensionError = "invalid file extension"
 	NotFoundFileError     = "file is not found"
 	EmptyFileError        = "file is empty"
+	InvalidFormatError    = "format is invalid"
 )
 
 type FileStream struct {
@@ -27,7 +29,12 @@ func (fileStream *FileStream) Read() ([][]bool, error) {
 		return nil, errors.New(NotFoundFileError)
 	}
 
-	return nil, errors.New(EmptyFileError)
+	readGeneration, _ := ioutil.ReadFile(fileStream.path)
+	if string(readGeneration) == "" {
+		return nil, errors.New(EmptyFileError)
+	}
+
+	return nil, errors.New(InvalidFormatError)
 }
 
 func New(path string) (*FileStream, error) {
