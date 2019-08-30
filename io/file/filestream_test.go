@@ -2,10 +2,83 @@ package file_test
 
 import (
 	"errors"
+	"fmt"
+	"io/ioutil"
+	"os"
 	"testing"
 
+	"github.com/Irainia/gameoflife-go/cell"
 	"github.com/Irainia/gameoflife-go/io/file"
 )
+
+const (
+	cellDirectory = "./"
+	tubCell       = "tub.cell"
+	blinkerCell   = "blinker.cell"
+	emptyCell     = "empty.cell"
+	invalidCell   = "invalid.cell"
+)
+
+var (
+	tubGeneration = [][]bool{
+		{false, true, false},
+		{true, false, true},
+		{false, true, false},
+	}
+)
+
+const (
+	emptyGeneration   string = ""
+	invalidGeneration string = "o--ox"
+)
+
+func TestMain(m *testing.M) {
+	setup()
+	code := m.Run()
+	teardown()
+	os.Exit(code)
+}
+
+func setup() {
+	cellState, _ := cell.New(tubGeneration)
+	path := fmt.Sprintf("%s%s", cellDirectory, tubCell)
+	err := ioutil.WriteFile(path, []byte(cellState.String()), os.ModePerm)
+	if err != nil {
+		panic(err)
+	}
+
+	path = fmt.Sprintf("%s%s", cellDirectory, emptyCell)
+	err = ioutil.WriteFile(path, []byte(emptyGeneration), os.ModePerm)
+	if err != nil {
+		panic(err)
+	}
+
+	path = fmt.Sprintf("%s%s", cellDirectory, invalidCell)
+	err = ioutil.WriteFile(path, []byte(invalidGeneration), os.ModePerm)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func teardown() {
+	path := fmt.Sprintf("%s%s", cellDirectory, tubCell)
+	err := os.Remove(path)
+	if err != nil {
+		panic(err)
+	}
+
+	path = fmt.Sprintf("%s%s", cellDirectory, emptyCell)
+	err = os.Remove(path)
+	if err != nil {
+		panic(err)
+	}
+
+	path = fmt.Sprintf("%s%s", cellDirectory, invalidCell)
+	err = os.Remove(path)
+	if err != nil {
+		panic(err)
+	}
+}
 
 func TestNewShouldReturnNilAndErrorForEmptyPath(t *testing.T) {
 	var expectedFileStream *file.FileStream = nil
