@@ -3,6 +3,7 @@ package file
 import (
 	"errors"
 	"fmt"
+	"os"
 	"strings"
 )
 
@@ -14,13 +15,19 @@ const (
 	PathEmptyError        = "path passed is empty"
 	InvalidExtensionError = "invalid file extension"
 	NotFoundFileError     = "file is not found"
+	EmptyFileError        = "file is empty"
 )
 
 type FileStream struct {
+	path string
 }
 
 func (fileStream *FileStream) Read() ([][]bool, error) {
-	return nil, errors.New(NotFoundFileError)
+	if _, err := os.Stat(fileStream.path); os.IsNotExist(err) {
+		return nil, errors.New(NotFoundFileError)
+	}
+
+	return nil, errors.New(EmptyFileError)
 }
 
 func New(path string) (*FileStream, error) {
@@ -31,7 +38,9 @@ func New(path string) (*FileStream, error) {
 		return nil, errors.New(InvalidExtensionError)
 	}
 
-	var fileStream = FileStream{}
+	var fileStream = FileStream{
+		path: path,
+	}
 	return &fileStream, nil
 }
 

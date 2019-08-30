@@ -153,3 +153,23 @@ func TestReadShouldReturnNilAndErrorForNonExistentFile(t *testing.T) {
 		t.Errorf("expected: %s -- actual: %s", expectedError.Error(), actualError.Error())
 	}
 }
+
+func TestReadShouldReturnNilAndErrorForEmptyFile(t *testing.T) {
+	path := fmt.Sprintf("%s%s", cellDirectory, emptyCell)
+	fileStream, _ := file.New(path)
+	var expectedError error = errors.New(file.EmptyFileError)
+
+	actualGeneration, actualError := fileStream.Read()
+
+	if actualGeneration != nil {
+		t.Error("expected: nil -- actual: not nil")
+		return
+	}
+	if actualError == nil {
+		t.Error("expected: not nil -- actual: nil")
+		return
+	}
+	if actualError.Error() != expectedError.Error() {
+		t.Errorf("expected: %s -- actual: %s", expectedError.Error(), actualError.Error())
+	}
+}
