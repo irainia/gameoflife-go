@@ -259,3 +259,25 @@ func TestWriteShouldReturnErrorForEmptyGeneration(t *testing.T) {
 		t.Errorf("expected: %s -- actual: %s", expectedError.Error(), actualError.Error())
 	}
 }
+
+func TestWriteShouldReturnNilForValidGeneration(t *testing.T) {
+	path := fmt.Sprintf("%s%s", cellDirectory, gliderCell)
+	fileStream, _ := file.New(path)
+	var validGeneration [][]bool = gliderGeneration
+	var expectedError error = nil
+	var expectedGeneration string = gliderGenerationString
+
+	actualError := fileStream.Write(validGeneration)
+
+	if actualError != expectedError {
+		t.Errorf("expected: nil -- actual: %s", actualError.Error())
+		return
+	}
+	actualGeneration, err := ioutil.ReadFile(path)
+	if err != nil {
+		panic(err)
+	}
+	if string(actualGeneration) != expectedGeneration {
+		t.Errorf("expected: %s -- actual: %s", expectedGeneration, string(actualGeneration))
+	}
+}

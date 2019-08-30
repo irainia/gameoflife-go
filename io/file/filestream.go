@@ -1,6 +1,7 @@
 package file
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
 	"io/ioutil"
@@ -58,7 +59,26 @@ func (fileStream *FileStream) Write(generation [][]bool) error {
 	if generation == nil {
 		return errors.New(NilGenerationError)
 	}
-	return errors.New(EmptyGenerationError)
+	if len(generation) == 0 {
+		return errors.New(EmptyGenerationError)
+	}
+
+	var buffer bytes.Buffer
+	for i := 0; i < len(generation); i++ {
+		for j := 0; j < len(generation[i]); j++ {
+			if generation[i][j] {
+				buffer.WriteString("o")
+			} else {
+				buffer.WriteString("-")
+			}
+		}
+
+		if i < len(generation)-1 {
+			buffer.WriteString("\n")
+		}
+	}
+
+	return ioutil.WriteFile(fileStream.path, buffer.Bytes(), os.ModePerm)
 }
 
 func New(path string) (*FileStream, error) {
