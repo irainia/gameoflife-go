@@ -14,7 +14,7 @@ import (
 const (
 	cellDirectory = "./"
 	tubCell       = "tub.cell"
-	blinkerCell   = "blinker.cell"
+	gliderCell    = "glider.cell"
 	emptyCell     = "empty.cell"
 	invalidCell   = "invalid.cell"
 )
@@ -25,11 +25,17 @@ var (
 		{true, false, true},
 		{false, true, false},
 	}
+	gliderGeneration = [][]bool{
+		{false, true, false},
+		{false, false, true},
+		{true, true, true},
+	}
 )
 
 const (
 	emptyGenerationString   string = ""
 	invalidGenerationString string = "o--ox"
+	gliderGenerationString  string = "-o-\n--o\nooo"
 )
 
 func TestMain(m *testing.M) {
@@ -195,7 +201,8 @@ func TestReadShouldReturnNilAndErrorForInvalidFormat(t *testing.T) {
 }
 
 func TestReadShouldReturnGenerationAndNilForValidFile(t *testing.T) {
-	fileStream, _ := file.New(tubCell)
+	path := fmt.Sprintf("%s%s", cellDirectory, tubCell)
+	fileStream, _ := file.New(path)
 	expectedGeneration := tubGeneration
 	var expectedError error = nil
 
