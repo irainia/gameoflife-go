@@ -12,7 +12,7 @@ func TestNewShouldReturnNilAndErrorForNilArgs(t *testing.T) {
 	var expectedParam *param.Param = nil
 	var expectedError error = errors.New(param.NilArgsError)
 
-	actualParam, actualError := param.New(args)
+	actualParam, actualError := param.New(args, nil, nil)
 
 	if actualParam != expectedParam {
 		t.Error("expected: nil -- actual: not nil")
@@ -32,7 +32,7 @@ func TestNewShouldReturnNilAndErrorForEmptyArgs(t *testing.T) {
 	var expectedParam *param.Param = nil
 	var expectedError error = errors.New(param.EmptyArgsError)
 
-	actualParam, actualError := param.New(args)
+	actualParam, actualError := param.New(args, nil, nil)
 
 	if actualParam != expectedParam {
 		t.Error("expected: nil -- actual: not nil")
@@ -54,7 +54,7 @@ func TestNewShouldReturnNilAndErrorForNoInputType(t *testing.T) {
 	var expectedParam *param.Param = nil
 	var expectedError error = errors.New(param.NoInputTypeError)
 
-	actualParam, actualError := param.New(args)
+	actualParam, actualError := param.New(args, nil, nil)
 
 	if actualParam != expectedParam {
 		t.Error("expected: nil -- actual: not nil")
@@ -76,7 +76,7 @@ func TestNewShouldReturnNilAndErrorForNoSeparatorAssignment(t *testing.T) {
 	var expectedParam *param.Param = nil
 	var expectedError error = errors.New(param.NoSeparatorError)
 
-	actualParam, actualError := param.New(args)
+	actualParam, actualError := param.New(args, nil, nil)
 
 	if actualParam != expectedParam {
 		t.Error("expected: nil -- actual: not nil")
@@ -98,7 +98,7 @@ func TestNewShouldReturnNilAndErrorForNoInputTypeValue(t *testing.T) {
 	var expectedParam *param.Param = nil
 	var expectedError error = errors.New(param.NoInputTypeValueError)
 
-	actualParam, actualError := param.New(args)
+	actualParam, actualError := param.New(args, nil, nil)
 
 	if actualParam != expectedParam {
 		t.Error("expected: nil -- actual: not nil")
@@ -120,7 +120,7 @@ func TestNewShouldReturnNilAndErrorForUnknownInputTypeValue(t *testing.T) {
 	var expectedParam *param.Param = nil
 	var expectedError error = errors.New(param.UnknownInputTypeValueError)
 
-	actualParam, actualError := param.New(args)
+	actualParam, actualError := param.New(args, nil, nil)
 
 	if actualParam != expectedParam {
 		t.Error("expected: nil -- actual: not nil")
@@ -142,7 +142,7 @@ func TestNewShouldReturnNilAndErrorForUnknownArgument(t *testing.T) {
 	var expectedParam *param.Param = nil
 	var expectedError error = errors.New(param.UnknownArgumentError)
 
-	actualParam, actualError := param.New(args)
+	actualParam, actualError := param.New(args, nil, nil)
 
 	if actualParam != expectedParam {
 		t.Error("expected: nil -- actual: not nil")
@@ -164,7 +164,7 @@ func TestNewShouldReturnNilAndErrorForInputTypeFileNoInputPath(t *testing.T) {
 	var expectedParam *param.Param = nil
 	var expectedError error = errors.New(param.NoInputPathError)
 
-	actualParam, actualError := param.New(args)
+	actualParam, actualError := param.New(args, nil, nil)
 
 	if actualParam != expectedParam {
 		t.Error("expected: nil -- actual: not nil")
@@ -187,7 +187,7 @@ func TestNewShouldReturnNilAndErrorForNoOutputType(t *testing.T) {
 	var expectedParam *param.Param = nil
 	var expectedError error = errors.New(param.NoOutputTypeError)
 
-	actualParam, actualError := param.New(args)
+	actualParam, actualError := param.New(args, nil, nil)
 
 	if actualParam != expectedParam {
 		t.Error("expected: nil -- actual: not nil")
@@ -211,7 +211,7 @@ func TestNewShouldReturnNilAndErrorForNoOutputTypeValue(t *testing.T) {
 	var expectedParam *param.Param = nil
 	var expectedError error = errors.New(param.NoOutputTypeValueError)
 
-	actualParam, actualError := param.New(args)
+	actualParam, actualError := param.New(args, nil, nil)
 
 	if actualParam != expectedParam {
 		t.Error("expected: nil -- actual: not nil")
@@ -235,7 +235,7 @@ func TestNewShouldReturnNilAndErrorForUnknownOutputTypeValue(t *testing.T) {
 	var expectedParam *param.Param = nil
 	var expectedError error = errors.New(param.UnknownOutputTypeValueError)
 
-	actualParam, actualError := param.New(args)
+	actualParam, actualError := param.New(args, nil, nil)
 
 	if actualParam != expectedParam {
 		t.Error("expected: nil -- actual: not nil")
@@ -259,7 +259,7 @@ func TestNewShouldReturnNilAndErrorForOutputTypeFileNoOutputPath(t *testing.T) {
 	var expectedParam *param.Param = nil
 	var expectedError error = errors.New(param.NoOutputPathError)
 
-	actualParam, actualError := param.New(args)
+	actualParam, actualError := param.New(args, nil, nil)
 
 	if actualParam != expectedParam {
 		t.Error("expected: nil -- actual: not nil")
@@ -284,7 +284,7 @@ func TestNewShouldReturnNilAndErrorForNoGeneration(t *testing.T) {
 	var expectedParam *param.Param = nil
 	var expectedError error = errors.New(param.NoGenerationError)
 
-	actualParam, actualError := param.New(args)
+	actualParam, actualError := param.New(args, nil, nil)
 
 	if actualParam != expectedParam {
 		t.Error("expected: nil -- actual: not nil")
@@ -310,7 +310,7 @@ func TestNewShouldReturnNilAndErrorForInvalidGeneration(t *testing.T) {
 	var expectedParam *param.Param = nil
 	var expectedError error = errors.New(param.InvalidGenerationError)
 
-	actualParam, actualError := param.New(args)
+	actualParam, actualError := param.New(args, nil, nil)
 
 	if actualParam != expectedParam {
 		t.Error("expected: nil -- actual: not nil")
@@ -336,7 +336,7 @@ func TestNewShouldReturnNilAndErrorForLessThanOneGeneration(t *testing.T) {
 	var expectedParam *param.Param = nil
 	var expectedError error = errors.New(param.LessThanOneGenerationError)
 
-	actualParam, actualError := param.New(args)
+	actualParam, actualError := param.New(args, nil, nil)
 
 	if actualParam != expectedParam {
 		t.Error("expected: nil -- actual: not nil")
@@ -351,7 +351,7 @@ func TestNewShouldReturnNilAndErrorForLessThanOneGeneration(t *testing.T) {
 	}
 }
 
-func TestNewShouldReturnNilAndErrorForInputTypeCustomAndCustomNil(t *testing.T) {
+func TestNewShouldReturnNilAndErrorForInputTypeCustomAndReaderNil(t *testing.T) {
 	var args []string = []string{
 		"--inputtype=custom",
 		"--outputtype=file",
@@ -361,7 +361,7 @@ func TestNewShouldReturnNilAndErrorForInputTypeCustomAndCustomNil(t *testing.T) 
 	var expectedParam *param.Param = nil
 	var expectedError error = errors.New(param.NoCustomInputError)
 
-	actualParam, actualError := param.New(args)
+	actualParam, actualError := param.New(args, nil, nil)
 
 	if actualParam != expectedParam {
 		t.Error("expected: nil -- actual: not nil")

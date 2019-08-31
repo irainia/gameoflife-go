@@ -40,7 +40,7 @@ type Param struct {
 	writeStream *io.Reader
 }
 
-func New(args []string, custom ...interface{}) (*Param, error) {
+func New(args []string, reader io.Reader, writer io.Writer) (*Param, error) {
 	if args == nil {
 		return nil, errors.New(NilArgsError)
 	}
