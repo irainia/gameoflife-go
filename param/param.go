@@ -16,8 +16,9 @@ const (
 	NoInputTypeError           = "no input type provided"
 	NoInputTypeValueError      = "no input type value provided"
 	UnknownInputTypeValueError = "unknown input type value"
+	NoInputPathError           = "no input path provided"
 
-	NoInputPathError = "no input path provided"
+	NoOutputTypeError = "no output type provided"
 
 	NoSeparatorError = "no separator"
 )
@@ -55,10 +56,17 @@ func New(args []string, custom ...interface{}) (*Param, error) {
 					return nil, errors.New(UnknownInputTypeValueError)
 				}
 			}
+			if arg[0] == "--inputpath" {
+				mappedArgs[arg[0]] = arg[1]
+				continue
+			}
 			return nil, errors.New(UnknownArgumentError)
 		}
 		return nil, errors.New(NoSeparatorError)
 	}
 
-	return nil, errors.New(NoInputPathError)
+	if mappedArgs["--inputpath"] == "" {
+		return nil, errors.New(NoInputPathError)
+	}
+	return nil, errors.New(NoOutputTypeError)
 }
