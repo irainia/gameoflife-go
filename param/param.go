@@ -44,7 +44,7 @@ func New(args []string, custom ...interface{}) (*Param, error) {
 		if arg[1] == "" {
 			return nil, errors.New(NoInputTypeValueError)
 		}
-		if arg[0] != "--streamtype" {
+		if arg[0] != "--inputtype" {
 			return nil, errors.New(UnknownArgumentError)
 		}
 		return nil, errors.New(UnknownInputTypeValueError)

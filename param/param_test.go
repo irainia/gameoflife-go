@@ -71,7 +71,7 @@ func TestNewShouldReturnNilAndErrorForNoInputStreamType(t *testing.T) {
 
 func TestNewShouldReturnNilAndErrorForNoSeparatorAssignment(t *testing.T) {
 	var args []string = []string{
-		"--streamtype",
+		"--inputtype",
 	}
 	var expectedParam *param.Param = nil
 	var expectedError error = errors.New(param.NoSeparatorError)
@@ -93,7 +93,7 @@ func TestNewShouldReturnNilAndErrorForNoSeparatorAssignment(t *testing.T) {
 
 func TestNewShouldReturnNilAndErrorForNoInputStreamValue(t *testing.T) {
 	var args []string = []string{
-		"--streamtype=",
+		"--inputtype=",
 	}
 	var expectedParam *param.Param = nil
 	var expectedError error = errors.New(param.NoInputTypeValueError)
@@ -115,7 +115,7 @@ func TestNewShouldReturnNilAndErrorForNoInputStreamValue(t *testing.T) {
 
 func TestNewShouldReturnNilAndErrorForUnknownInputStreamValue(t *testing.T) {
 	var args []string = []string{
-		"--streamtype=unknown",
+		"--inputtype=unknown",
 	}
 	var expectedParam *param.Param = nil
 	var expectedError error = errors.New(param.UnknownInputTypeValueError)
