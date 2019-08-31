@@ -66,27 +66,9 @@ func New(args []string, reader io.Reader, writer io.Writer) (*Param, error) {
 		return nil, errors.New(EmptyArgsError)
 	}
 
-	mappedArgs := make(map[string]string)
-	for i := 0; i < len(args); i++ {
-		arg := strings.Split(args[i], argumentSeparator)
-		if len(arg) == 2 {
-			switch arg[0] {
-			case inputType, outputType:
-				if !(arg[1] == ioTypeFile || arg[1] == ioTypeCustom) {
-					if arg[0] == inputType {
-						return nil, errors.New(UnknownInputTypeValueError)
-					}
-					return nil, errors.New(UnknownOutputTypeValueError)
-				}
-				fallthrough
-			case inputPath, outputPath, generation:
-				mappedArgs[arg[0]] = arg[1]
-				continue
-			default:
-				return nil, errors.New(UnknownArgumentError)
-			}
-		}
-		return nil, errors.New(NoSeparatorError)
+	mappedArgs, err := mapArgs(args)
+	if err != nil {
+		return nil, err
 	}
 
 	argumentCheckList := []struct {
@@ -154,4 +136,31 @@ func New(args []string, reader io.Reader, writer io.Writer) (*Param, error) {
 		writeStream:     writer,
 	}
 	return &param, nil
+}
+
+func mapArgs(args []string) (map[string]string, error) {
+	mappedArgs := make(map[string]string)
+	for i := 0; i < len(args); i++ {
+		arg := strings.Split(args[i], argumentSeparator)
+		if len(arg) == 2 {
+			switch arg[0] {
+			case inputType, outputType:
+				if !(arg[1] == ioTypeFile || arg[1] == ioTypeCustom) {
+					if arg[0] == inputType {
+						return nil, errors.New(UnknownInputTypeValueError)
+					}
+					return nil, errors.New(UnknownOutputTypeValueError)
+				}
+				fallthrough
+			case inputPath, outputPath, generation:
+				mappedArgs[arg[0]] = arg[1]
+				continue
+			default:
+				return nil, errors.New(UnknownArgumentError)
+			}
+		}
+		return nil, errors.New(NoSeparatorError)
+	}
+
+	return mappedArgs, nil
 }
