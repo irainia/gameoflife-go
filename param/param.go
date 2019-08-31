@@ -17,6 +17,8 @@ const (
 	NoInputTypeValueError      = "no input type value provided"
 	UnknownInputTypeValueError = "unknown input type value"
 
+	NoInputPathError = "no input path provided"
+
 	NoSeparatorError = "no separator"
 )
 
@@ -35,20 +37,28 @@ func New(args []string, custom ...interface{}) (*Param, error) {
 		return nil, errors.New(EmptyArgsError)
 	}
 
-	if args[0] == "" {
-		return nil, errors.New(NoInputTypeError)
-	}
-
-	arg := strings.Split(args[0], "=")
-	if len(arg) == 2 {
-		if arg[1] == "" {
-			return nil, errors.New(NoInputTypeValueError)
+	mappedArgs := make(map[string]string)
+	for i := 0; i < len(args); i++ {
+		if args[i] == "" {
+			return nil, errors.New(NoInputTypeError)
 		}
-		if arg[0] != "--inputtype" {
+
+		arg := strings.Split(args[i], "=")
+		if len(arg) == 2 {
+			if arg[0] == "--inputtype" {
+				if arg[1] == "file" {
+					mappedArgs[arg[0]] = arg[1]
+					continue
+				} else if arg[1] == "" {
+					return nil, errors.New(NoInputTypeValueError)
+				} else {
+					return nil, errors.New(UnknownInputTypeValueError)
+				}
+			}
 			return nil, errors.New(UnknownArgumentError)
 		}
-		return nil, errors.New(UnknownInputTypeValueError)
+		return nil, errors.New(NoSeparatorError)
 	}
 
-	return nil, errors.New(NoSeparatorError)
+	return nil, errors.New(NoInputPathError)
 }
