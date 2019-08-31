@@ -4,6 +4,7 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/Irainia/gameoflife-go/io/file"
 	"github.com/Irainia/gameoflife-go/param"
 )
 
@@ -362,6 +363,31 @@ func TestNewShouldReturnNilAndErrorForInputTypeCustomAndReaderNil(t *testing.T) 
 	var expectedError error = errors.New(param.NoCustomReaderError)
 
 	actualParam, actualError := param.New(args, nil, nil)
+
+	if actualParam != expectedParam {
+		t.Error("expected: nil -- actual: not nil")
+		return
+	}
+	if actualError == nil {
+		t.Errorf("expected: not nil -- actual: nil")
+		return
+	}
+	if actualError.Error() != expectedError.Error() {
+		t.Errorf("expected: %s -- actual: %s", expectedError.Error(), actualError.Error())
+	}
+}
+
+func TestNewShouldReturnNilAndErrorForOutputTypeCustomAndWriterNil(t *testing.T) {
+	var args []string = []string{
+		"--inputtype=custom",
+		"--outputtype=custom",
+		"--generation=1",
+	}
+	fileStream, _ := file.New("./input.cell")
+	var expectedParam *param.Param = nil
+	var expectedError error = errors.New(param.NoCustomWriterError)
+
+	actualParam, actualError := param.New(args, fileStream, nil)
 
 	if actualParam != expectedParam {
 		t.Error("expected: nil -- actual: not nil")

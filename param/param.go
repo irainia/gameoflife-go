@@ -31,6 +31,7 @@ const (
 	NoSeparatorError = "no separator"
 
 	NoCustomReaderError = "no custom reader provided"
+	NoCustomWriterError = "no custom writer provided"
 )
 
 type Param struct {
@@ -71,7 +72,7 @@ func New(args []string, reader io.Reader, writer io.Writer) (*Param, error) {
 				continue
 			}
 			if arg[0] == "--outputtype" {
-				if arg[1] == "file" {
+				if arg[1] == "file" || arg[1] == "custom" {
 					mappedArgs[arg[0]] = arg[1]
 					continue
 				} else if arg[1] == "" {
@@ -99,7 +100,7 @@ func New(args []string, reader io.Reader, writer io.Writer) (*Param, error) {
 	if mappedArgs["--outputtype"] == "" {
 		return nil, errors.New(NoOutputTypeError)
 	}
-	if mappedArgs["--outputpath"] == "" {
+	if mappedArgs["--outputtype"] == "file" && mappedArgs["--outputpath"] == "" {
 		return nil, errors.New(NoOutputPathError)
 	}
 	if mappedArgs["--generation"] == "" {
@@ -113,5 +114,8 @@ func New(args []string, reader io.Reader, writer io.Writer) (*Param, error) {
 	if generation < 1 {
 		return nil, errors.New(LessThanOneGenerationError)
 	}
-	return nil, errors.New(NoCustomReaderError)
+	if reader == nil {
+		return nil, errors.New(NoCustomReaderError)
+	}
+	return nil, errors.New(NoCustomWriterError)
 }
