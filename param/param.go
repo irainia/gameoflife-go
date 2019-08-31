@@ -2,6 +2,7 @@ package param
 
 import (
 	"errors"
+	"strconv"
 	"strings"
 
 	"github.com/Irainia/gameoflife-go/io"
@@ -23,8 +24,9 @@ const (
 	UnknownOutputTypeValueError = "unknown output type value"
 	NoOutputPathError           = "no output path provided"
 
-	NoGenerationError      = "no generation provided"
-	InvalidGenerationError = "invalid generation"
+	NoGenerationError          = "no generation provided"
+	InvalidGenerationError     = "invalid generation"
+	LessThanOneGenerationError = "generation is less than one"
 
 	NoSeparatorError = "no separator"
 )
@@ -101,5 +103,10 @@ func New(args []string, custom ...interface{}) (*Param, error) {
 	if mappedArgs["--generation"] == "" {
 		return nil, errors.New(NoGenerationError)
 	}
-	return nil, errors.New(InvalidGenerationError)
+
+	_, err := strconv.ParseInt(mappedArgs["--generation"], 10, 32)
+	if err != nil {
+		return nil, errors.New(InvalidGenerationError)
+	}
+	return nil, errors.New(LessThanOneGenerationError)
 }
