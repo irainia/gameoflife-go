@@ -92,28 +92,6 @@ func TestNewShouldReturnNilAndErrorForNoSeparatorAssignment(t *testing.T) {
 	}
 }
 
-func TestNewShouldReturnNilAndErrorForNoInputTypeValue(t *testing.T) {
-	var args []string = []string{
-		"--inputtype=",
-	}
-	var expectedParam *param.Param = nil
-	var expectedError error = errors.New(param.NoInputTypeValueError)
-
-	actualParam, actualError := param.New(args, nil, nil)
-
-	if actualParam != expectedParam {
-		t.Error("expected: nil -- actual: not nil")
-		return
-	}
-	if actualError == nil {
-		t.Errorf("expected: not nil -- actual: nil")
-		return
-	}
-	if actualError.Error() != expectedError.Error() {
-		t.Errorf("expected: %s -- actual: %s", expectedError.Error(), actualError.Error())
-	}
-}
-
 func TestNewShouldReturnNilAndErrorForUnknownInputTypeValue(t *testing.T) {
 	var args []string = []string{
 		"--inputtype=unknown",
@@ -187,30 +165,6 @@ func TestNewShouldReturnNilAndErrorForNoOutputType(t *testing.T) {
 	}
 	var expectedParam *param.Param = nil
 	var expectedError error = errors.New(param.NoOutputTypeError)
-
-	actualParam, actualError := param.New(args, nil, nil)
-
-	if actualParam != expectedParam {
-		t.Error("expected: nil -- actual: not nil")
-		return
-	}
-	if actualError == nil {
-		t.Errorf("expected: not nil -- actual: nil")
-		return
-	}
-	if actualError.Error() != expectedError.Error() {
-		t.Errorf("expected: %s -- actual: %s", expectedError.Error(), actualError.Error())
-	}
-}
-
-func TestNewShouldReturnNilAndErrorForNoOutputTypeValue(t *testing.T) {
-	var args []string = []string{
-		"--inputtype=file",
-		"--inputpath=./input.cell",
-		"--outputtype=",
-	}
-	var expectedParam *param.Param = nil
-	var expectedError error = errors.New(param.NoOutputTypeValueError)
 
 	actualParam, actualError := param.New(args, nil, nil)
 

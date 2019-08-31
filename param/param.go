@@ -16,12 +16,10 @@ const (
 	UnknownArgumentError = "unknown argument"
 
 	NoInputTypeError           = "no input type provided"
-	NoInputTypeValueError      = "no input type value provided"
 	UnknownInputTypeValueError = "unknown input type value"
 	NoInputPathError           = "no input path provided"
 
 	NoOutputTypeError           = "no output type provided"
-	NoOutputTypeValueError      = "no output type value provided"
 	UnknownOutputTypeValueError = "unknown output type value"
 	NoOutputPathError           = "no output path provided"
 
@@ -62,8 +60,6 @@ func New(args []string, reader io.Reader, writer io.Writer) (*Param, error) {
 				if arg[1] == "file" || arg[1] == "custom" {
 					mappedArgs[arg[0]] = arg[1]
 					continue
-				} else if arg[1] == "" {
-					return nil, errors.New(NoInputTypeValueError)
 				} else {
 					return nil, errors.New(UnknownInputTypeValueError)
 				}
@@ -76,8 +72,6 @@ func New(args []string, reader io.Reader, writer io.Writer) (*Param, error) {
 				if arg[1] == "file" || arg[1] == "custom" {
 					mappedArgs[arg[0]] = arg[1]
 					continue
-				} else if arg[1] == "" {
-					return nil, errors.New(NoOutputTypeValueError)
 				} else {
 					return nil, errors.New(UnknownOutputTypeValueError)
 				}
