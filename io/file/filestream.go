@@ -15,7 +15,7 @@ const (
 
 const (
 	PathEmptyError        = "path passed is empty"
-	InvalidExtensionError = "invalid file extension"
+	InvalidExtensionError = "invalid file extension (file should be *.cell)"
 	NotFoundFileError     = "file is not found"
 	EmptyFileError        = "file is empty"
 	InvalidFormatError    = "format is invalid ('o': true and '-': false)"
