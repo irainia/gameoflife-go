@@ -47,7 +47,7 @@ func TestNewShouldReturnNilAndErrorForEmptyArgs(t *testing.T) {
 	}
 }
 
-func TestNewShouldReturnNilAndErrorForNoInputStreamType(t *testing.T) {
+func TestNewShouldReturnNilAndErrorForNoInputType(t *testing.T) {
 	var args []string = []string{
 		"",
 	}
@@ -91,7 +91,7 @@ func TestNewShouldReturnNilAndErrorForNoSeparatorAssignment(t *testing.T) {
 	}
 }
 
-func TestNewShouldReturnNilAndErrorForNoInputStreamValue(t *testing.T) {
+func TestNewShouldReturnNilAndErrorForNoInputTypeValue(t *testing.T) {
 	var args []string = []string{
 		"--inputtype=",
 	}
@@ -113,7 +113,7 @@ func TestNewShouldReturnNilAndErrorForNoInputStreamValue(t *testing.T) {
 	}
 }
 
-func TestNewShouldReturnNilAndErrorForUnknownInputStreamValue(t *testing.T) {
+func TestNewShouldReturnNilAndErrorForUnknownInputTypeValue(t *testing.T) {
 	var args []string = []string{
 		"--inputtype=unknown",
 	}
