@@ -123,5 +123,9 @@ func New(args []string, reader io.Reader, writer io.Writer) (*Param, error) {
 	}
 
 	_, err = file.New(mappedArgs["--inputpath"])
+	if err != nil {
+		return nil, err
+	}
+	_, err = file.New(mappedArgs["--outputpath"])
 	return nil, err
 }

@@ -422,3 +422,24 @@ func TestNewShouldReturnNilAndErrorForReaderError(t *testing.T) {
 		t.Errorf("expected: not nil -- actual: nil")
 	}
 }
+
+func TestNewShouldReturnNilAndErrorForWriterError(t *testing.T) {
+	var args []string = []string{
+		"--inputtype=file",
+		"--inputpath=./input.cell",
+		"--outputtype=file",
+		"--outputpath=./output",
+		"--generation=1",
+	}
+	var expectedParam *param.Param = nil
+
+	actualParam, actualError := param.New(args, nil, nil)
+
+	if actualParam != expectedParam {
+		t.Error("expected: nil -- actual: not nil")
+		return
+	}
+	if actualError == nil {
+		t.Errorf("expected: not nil -- actual: nil")
+	}
+}
