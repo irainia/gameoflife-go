@@ -89,6 +89,9 @@ func New(args []string, reader io.Reader, writer io.Writer) (*Param, error) {
 		return nil, errors.New(NoSeparatorError)
 	}
 
+	if mappedArgs[inputType] == emptyArgument {
+		return nil, errors.New(NoInputTypeError)
+	}
 	if mappedArgs[inputType] == ioTypeFile && mappedArgs[inputPath] == emptyArgument {
 		return nil, errors.New(NoInputPathError)
 	}
