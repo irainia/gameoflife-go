@@ -33,6 +33,24 @@ const (
 	NoCustomWriterError = "no custom writer provided"
 )
 
+const (
+	inputType  = "--inputtype"
+	inputPath  = "--inputpath"
+	outputType = "--outputtype"
+	outputPath = "--outputpath"
+	generation = "--generation"
+
+	ioTypeFile   = "file"
+	ioTypeCustom = "custom"
+
+	emptyArgument     = ""
+	argumentSeparator = "="
+
+	minGeneration  = 1
+	baseConvert    = 10
+	bitSizeConvert = 32
+)
+
 type Param struct {
 	numOfGeneration int
 
@@ -50,82 +68,68 @@ func New(args []string, reader io.Reader, writer io.Writer) (*Param, error) {
 
 	mappedArgs := make(map[string]string)
 	for i := 0; i < len(args); i++ {
-		if args[i] == "" {
+		if args[i] == emptyArgument {
 			return nil, errors.New(NoInputTypeError)
 		}
 
-		arg := strings.Split(args[i], "=")
+		arg := strings.Split(args[i], argumentSeparator)
 		if len(arg) == 2 {
-			if arg[0] == "--inputtype" {
-				if arg[1] == "file" || arg[1] == "custom" {
-					mappedArgs[arg[0]] = arg[1]
-					continue
-				} else {
-					return nil, errors.New(UnknownInputTypeValueError)
-				}
-			}
-			if arg[0] == "--inputpath" {
-				mappedArgs[arg[0]] = arg[1]
-				continue
-			}
-			if arg[0] == "--outputtype" {
-				if arg[1] == "file" || arg[1] == "custom" {
-					mappedArgs[arg[0]] = arg[1]
-					continue
-				} else {
+			switch arg[0] {
+			case inputType, outputType:
+				if !(arg[1] == ioTypeFile || arg[1] == ioTypeCustom) {
+					if arg[0] == inputType {
+						return nil, errors.New(UnknownInputTypeValueError)
+					}
 					return nil, errors.New(UnknownOutputTypeValueError)
 				}
-			}
-			if arg[0] == "--outputpath" {
+				fallthrough
+			case inputPath, outputPath, generation:
 				mappedArgs[arg[0]] = arg[1]
 				continue
+			default:
+				return nil, errors.New(UnknownArgumentError)
 			}
-			if arg[0] == "--generation" {
-				mappedArgs[arg[0]] = arg[1]
-				continue
-			}
-			return nil, errors.New(UnknownArgumentError)
 		}
 		return nil, errors.New(NoSeparatorError)
 	}
 
-	if mappedArgs["--inputtype"] == "file" && mappedArgs["--inputpath"] == "" {
+	if mappedArgs[inputType] == ioTypeFile && mappedArgs[inputPath] == emptyArgument {
 		return nil, errors.New(NoInputPathError)
 	}
-	if mappedArgs["--outputtype"] == "" {
+	if mappedArgs[outputType] == emptyArgument {
 		return nil, errors.New(NoOutputTypeError)
 	}
-	if mappedArgs["--outputtype"] == "file" && mappedArgs["--outputpath"] == "" {
+	if mappedArgs[outputType] == ioTypeFile && mappedArgs[outputPath] == emptyArgument {
 		return nil, errors.New(NoOutputPathError)
 	}
-	if mappedArgs["--generation"] == "" {
+	if mappedArgs[generation] == emptyArgument {
 		return nil, errors.New(NoGenerationError)
 	}
 
-	generation, err := strconv.ParseInt(mappedArgs["--generation"], 10, 32)
+	generation, err := strconv.ParseInt(mappedArgs[generation], baseConvert, bitSizeConvert)
 	if err != nil {
 		return nil, errors.New(InvalidGenerationError)
 	}
-	if generation < 1 {
+	if generation < minGeneration {
 		return nil, errors.New(LessThanOneGenerationError)
 	}
-	if mappedArgs["--inputtype"] == "custom" && reader == nil {
+	if mappedArgs[inputType] == ioTypeCustom && reader == nil {
 		return nil, errors.New(NoCustomReaderError)
 	}
-	if mappedArgs["--outputtype"] == "custom" && writer == nil {
+	if mappedArgs[outputType] == ioTypeCustom && writer == nil {
 		return nil, errors.New(NoCustomWriterError)
 	}
 
-	reader, err = file.New(mappedArgs["--inputpath"])
+	reader, err = file.New(mappedArgs[inputPath])
 	if err != nil {
 		return nil, err
 	}
-	writer, err = file.New(mappedArgs["--outputpath"])
+	writer, err = file.New(mappedArgs[outputPath])
 	if err != nil {
 		return nil, err
 	}
 
-	var param Param = Param{
+	var param = Param{
 		numOfGeneration: int(generation),
 		readStream:      reader,
 		writeStream:     writer,
