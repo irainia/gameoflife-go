@@ -7,7 +7,8 @@ import (
 )
 
 const (
-	NilArgsError = "args is nil"
+	NilArgsError   = "args is nil"
+	EmptyArgsError = "args is empty"
 )
 
 type Param struct {
@@ -18,5 +19,8 @@ type Param struct {
 }
 
 func New(args []string, custom ...interface{}) (*Param, error) {
-	return nil, errors.New(NilArgsError)
+	if args == nil {
+		return nil, errors.New(NilArgsError)
+	}
+	return nil, errors.New(EmptyArgsError)
 }
