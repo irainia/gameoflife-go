@@ -359,7 +359,7 @@ func TestNewShouldReturnNilAndErrorForInputTypeCustomAndReaderNil(t *testing.T) 
 		"--generation=1",
 	}
 	var expectedParam *param.Param = nil
-	var expectedError error = errors.New(param.NoCustomInputError)
+	var expectedError error = errors.New(param.NoCustomReaderError)
 
 	actualParam, actualError := param.New(args, nil, nil)
 

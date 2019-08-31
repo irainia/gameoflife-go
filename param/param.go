@@ -30,7 +30,7 @@ const (
 
 	NoSeparatorError = "no separator"
 
-	NoCustomInputError = "no custom input stream provided"
+	NoCustomReaderError = "no custom reader provided"
 )
 
 type Param struct {
@@ -113,5 +113,5 @@ func New(args []string, reader io.Reader, writer io.Writer) (*Param, error) {
 	if generation < 1 {
 		return nil, errors.New(LessThanOneGenerationError)
 	}
-	return nil, errors.New(NoCustomInputError)
+	return nil, errors.New(NoCustomReaderError)
 }
