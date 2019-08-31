@@ -29,6 +29,8 @@ const (
 	LessThanOneGenerationError = "generation is less than one"
 
 	NoSeparatorError = "no separator"
+
+	NoCustomInputError = "no custom input stream provided"
 )
 
 type Param struct {
@@ -55,7 +57,7 @@ func New(args []string, custom ...interface{}) (*Param, error) {
 		arg := strings.Split(args[i], "=")
 		if len(arg) == 2 {
 			if arg[0] == "--inputtype" {
-				if arg[1] == "file" {
+				if arg[1] == "file" || arg[1] == "custom" {
 					mappedArgs[arg[0]] = arg[1]
 					continue
 				} else if arg[1] == "" {
@@ -91,7 +93,7 @@ func New(args []string, custom ...interface{}) (*Param, error) {
 		return nil, errors.New(NoSeparatorError)
 	}
 
-	if mappedArgs["--inputpath"] == "" {
+	if mappedArgs["--inputtype"] == "file" && mappedArgs["--inputpath"] == "" {
 		return nil, errors.New(NoInputPathError)
 	}
 	if mappedArgs["--outputtype"] == "" {
@@ -104,9 +106,12 @@ func New(args []string, custom ...interface{}) (*Param, error) {
 		return nil, errors.New(NoGenerationError)
 	}
 
-	_, err := strconv.ParseInt(mappedArgs["--generation"], 10, 32)
+	generation, err := strconv.ParseInt(mappedArgs["--generation"], 10, 32)
 	if err != nil {
 		return nil, errors.New(InvalidGenerationError)
 	}
-	return nil, errors.New(LessThanOneGenerationError)
+	if generation < 1 {
+		return nil, errors.New(LessThanOneGenerationError)
+	}
+	return nil, errors.New(NoCustomInputError)
 }
