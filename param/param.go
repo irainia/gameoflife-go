@@ -89,34 +89,54 @@ func New(args []string, reader io.Reader, writer io.Writer) (*Param, error) {
 		return nil, errors.New(NoSeparatorError)
 	}
 
-	if mappedArgs[inputType] == emptyArgument {
-		return nil, errors.New(NoInputTypeError)
+	argumentCheckList := []struct {
+		streamType          string
+		streamPath          string
+		noStreamTypeError   string
+		noStreamPathError   string
+		noCustomStreamError string
+		stream              interface{}
+	}{
+		{
+			streamType:          inputType,
+			streamPath:          inputPath,
+			noStreamTypeError:   NoInputTypeError,
+			noStreamPathError:   NoInputPathError,
+			noCustomStreamError: NoCustomReaderError,
+			stream:              reader,
+		}, {
+			streamType:          outputType,
+			streamPath:          outputPath,
+			noStreamTypeError:   NoOutputTypeError,
+			noStreamPathError:   NoOutputPathError,
+			noCustomStreamError: NoCustomWriterError,
+			stream:              writer,
+		},
 	}
-	if mappedArgs[inputType] == ioTypeFile && mappedArgs[inputPath] == emptyArgument {
-		return nil, errors.New(NoInputPathError)
+	for _, argumentCheck := range argumentCheckList {
+		switch mappedArgs[argumentCheck.streamType] {
+		case emptyArgument:
+			return nil, errors.New(argumentCheck.noStreamTypeError)
+		case ioTypeFile:
+			if mappedArgs[argumentCheck.streamPath] == emptyArgument {
+				return nil, errors.New(argumentCheck.noStreamPathError)
+			}
+		case ioTypeCustom:
+			if argumentCheck.stream == nil {
+				return nil, errors.New(argumentCheck.noCustomStreamError)
+			}
+		}
 	}
-	if mappedArgs[outputType] == emptyArgument {
-		return nil, errors.New(NoOutputTypeError)
-	}
-	if mappedArgs[outputType] == ioTypeFile && mappedArgs[outputPath] == emptyArgument {
-		return nil, errors.New(NoOutputPathError)
-	}
+
 	if mappedArgs[generation] == emptyArgument {
 		return nil, errors.New(NoGenerationError)
 	}
-
 	generation, err := strconv.ParseInt(mappedArgs[generation], baseConvert, bitSizeConvert)
 	if err != nil {
 		return nil, errors.New(InvalidGenerationError)
 	}
 	if generation < minGeneration {
 		return nil, errors.New(LessThanOneGenerationError)
-	}
-	if mappedArgs[inputType] == ioTypeCustom && reader == nil {
-		return nil, errors.New(NoCustomReaderError)
-	}
-	if mappedArgs[outputType] == ioTypeCustom && writer == nil {
-		return nil, errors.New(NoCustomWriterError)
 	}
 
 	reader, err = file.New(mappedArgs[inputPath])
@@ -133,6 +153,5 @@ func New(args []string, reader io.Reader, writer io.Writer) (*Param, error) {
 		readStream:      reader,
 		writeStream:     writer,
 	}
-
 	return &param, nil
 }
