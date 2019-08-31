@@ -52,7 +52,7 @@ func TestNewShouldReturnNilAndErrorForNoInputStreamType(t *testing.T) {
 		"",
 	}
 	var expectedParam *param.Param = nil
-	var expectedError error = errors.New(param.NoInputStreamTypeError)
+	var expectedError error = errors.New(param.NoInputTypeError)
 
 	actualParam, actualError := param.New(args)
 
@@ -96,7 +96,7 @@ func TestNewShouldReturnNilAndErrorForNoInputStreamValue(t *testing.T) {
 		"--streamtype=",
 	}
 	var expectedParam *param.Param = nil
-	var expectedError error = errors.New(param.NoInputStreamValueError)
+	var expectedError error = errors.New(param.NoInputTypeValueError)
 
 	actualParam, actualError := param.New(args)
 
@@ -118,7 +118,7 @@ func TestNewShouldReturnNilAndErrorForUnknownInputStreamValue(t *testing.T) {
 		"--streamtype=unknown",
 	}
 	var expectedParam *param.Param = nil
-	var expectedError error = errors.New(param.UnknownInputStreamValueError)
+	var expectedError error = errors.New(param.UnknownInputTypeValueError)
 
 	actualParam, actualError := param.New(args)
 

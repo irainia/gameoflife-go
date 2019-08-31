@@ -8,13 +8,16 @@ import (
 )
 
 const (
-	NilArgsError                 = "args is nil"
-	EmptyArgsError               = "args is empty"
-	NoInputStreamTypeError       = "no input stream type provided"
-	NoInputStreamValueError      = "no input stream value provided"
-	UnknownArgumentError         = "unknown argument"
-	UnknownInputStreamValueError = "unknown stream value"
-	NoSeparatorError             = "no separator"
+	NilArgsError   = "args is nil"
+	EmptyArgsError = "args is empty"
+
+	UnknownArgumentError = "unknown argument"
+
+	NoInputTypeError           = "no input type provided"
+	NoInputTypeValueError      = "no input type value provided"
+	UnknownInputTypeValueError = "unknown input type value"
+
+	NoSeparatorError = "no separator"
 )
 
 type Param struct {
@@ -33,18 +36,18 @@ func New(args []string, custom ...interface{}) (*Param, error) {
 	}
 
 	if args[0] == "" {
-		return nil, errors.New(NoInputStreamTypeError)
+		return nil, errors.New(NoInputTypeError)
 	}
 
 	arg := strings.Split(args[0], "=")
 	if len(arg) == 2 {
 		if arg[1] == "" {
-			return nil, errors.New(NoInputStreamValueError)
+			return nil, errors.New(NoInputTypeValueError)
 		}
 		if arg[0] != "--streamtype" {
 			return nil, errors.New(UnknownArgumentError)
 		}
-		return nil, errors.New(UnknownInputStreamValueError)
+		return nil, errors.New(UnknownInputTypeValueError)
 	}
 
 	return nil, errors.New(NoSeparatorError)
