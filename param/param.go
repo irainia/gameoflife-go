@@ -18,8 +18,9 @@ const (
 	UnknownInputTypeValueError = "unknown input type value"
 	NoInputPathError           = "no input path provided"
 
-	NoOutputTypeError      = "no output type provided"
-	NoOutputTypeValueError = "no output type value provided"
+	NoOutputTypeError           = "no output type provided"
+	NoOutputTypeValueError      = "no output type value provided"
+	UnknownOutputTypeValueError = "unknown output type value"
 
 	NoSeparatorError = "no separator"
 )
@@ -64,6 +65,8 @@ func New(args []string, custom ...interface{}) (*Param, error) {
 			if arg[0] == "--outputtype" {
 				if arg[1] == "" {
 					return nil, errors.New(NoOutputTypeValueError)
+				} else {
+					return nil, errors.New(UnknownOutputTypeValueError)
 				}
 			}
 			return nil, errors.New(UnknownArgumentError)
