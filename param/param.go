@@ -21,6 +21,7 @@ const (
 	NoOutputTypeError           = "no output type provided"
 	NoOutputTypeValueError      = "no output type value provided"
 	UnknownOutputTypeValueError = "unknown output type value"
+	NoOutputPathError           = "no output path provided"
 
 	NoSeparatorError = "no separator"
 )
@@ -63,7 +64,10 @@ func New(args []string, custom ...interface{}) (*Param, error) {
 				continue
 			}
 			if arg[0] == "--outputtype" {
-				if arg[1] == "" {
+				if arg[1] == "file" {
+					mappedArgs[arg[0]] = arg[1]
+					continue
+				} else if arg[1] == "" {
 					return nil, errors.New(NoOutputTypeValueError)
 				} else {
 					return nil, errors.New(UnknownOutputTypeValueError)
@@ -77,5 +81,8 @@ func New(args []string, custom ...interface{}) (*Param, error) {
 	if mappedArgs["--inputpath"] == "" {
 		return nil, errors.New(NoInputPathError)
 	}
-	return nil, errors.New(NoOutputTypeError)
+	if mappedArgs["--outputtype"] == "" {
+		return nil, errors.New(NoOutputTypeError)
+	}
+	return nil, errors.New(NoOutputPathError)
 }
