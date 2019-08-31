@@ -443,3 +443,24 @@ func TestNewShouldReturnNilAndErrorForWriterError(t *testing.T) {
 		t.Errorf("expected: not nil -- actual: nil")
 	}
 }
+
+func TestNewShouldReturnParamAndNilForValidArgs(t *testing.T) {
+	var args []string = []string{
+		"--inputtype=file",
+		"--inputpath=./input.cell",
+		"--outputtype=file",
+		"--outputpath=./output.cell",
+		"--generation=1",
+	}
+	var expectedError error = nil
+
+	actualParam, actualError := param.New(args, nil, nil)
+
+	if actualParam == nil {
+		t.Error("expected: not nil -- actual: nil")
+		return
+	}
+	if actualError != expectedError {
+		t.Errorf("expected nil -- actual: %s", actualError.Error())
+	}
+}

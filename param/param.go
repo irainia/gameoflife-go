@@ -38,8 +38,8 @@ const (
 type Param struct {
 	numOfGeneration int
 
-	readStream  *io.Reader
-	writeStream *io.Reader
+	readStream  io.Reader
+	writeStream io.Writer
 }
 
 func New(args []string, reader io.Reader, writer io.Writer) (*Param, error) {
@@ -115,17 +115,27 @@ func New(args []string, reader io.Reader, writer io.Writer) (*Param, error) {
 	if generation < 1 {
 		return nil, errors.New(LessThanOneGenerationError)
 	}
-	if reader == nil {
+	if mappedArgs["--inputtype"] == "custom" && reader == nil {
 		return nil, errors.New(NoCustomReaderError)
 	}
-	if writer == nil {
+	if mappedArgs["--outputtype"] == "custom" && writer == nil {
 		return nil, errors.New(NoCustomWriterError)
 	}
 
-	_, err = file.New(mappedArgs["--inputpath"])
+	reader, err = file.New(mappedArgs["--inputpath"])
 	if err != nil {
 		return nil, err
 	}
-	_, err = file.New(mappedArgs["--outputpath"])
-	return nil, err
+	writer, err = file.New(mappedArgs["--outputpath"])
+	if err != nil {
+		return nil, err
+	}
+
+	var param Param = Param{
+		numOfGeneration: int(generation),
+		readStream:      reader,
+		writeStream:     writer,
+	}
+
+	return &param, nil
 }
