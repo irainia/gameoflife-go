@@ -12,6 +12,7 @@ const (
 	EmptyArgsError               = "args is empty"
 	NoInputStreamTypeError       = "no input stream type provided"
 	NoInputStreamValueError      = "no input stream value provided"
+	UnknownArgumentError         = "unknown argument"
 	UnknownInputStreamValueError = "unknown stream value"
 	NoSeparatorError             = "no separator"
 )
@@ -39,6 +40,9 @@ func New(args []string, custom ...interface{}) (*Param, error) {
 	if len(arg) == 2 {
 		if arg[1] == "" {
 			return nil, errors.New(NoInputStreamValueError)
+		}
+		if arg[0] != "--streamtype" {
+			return nil, errors.New(UnknownArgumentError)
 		}
 		return nil, errors.New(UnknownInputStreamValueError)
 	}
