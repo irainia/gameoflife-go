@@ -58,6 +58,10 @@ type Param struct {
 	writeStream io.Writer
 }
 
+func (parameter *Param) GetNumOfGeneration() int {
+	return parameter.numOfGeneration
+}
+
 func New(args []string, reader io.Reader, writer io.Writer) (*Param, error) {
 	if args == nil {
 		return nil, errors.New(NilArgsError)
@@ -75,11 +79,11 @@ func New(args []string, reader io.Reader, writer io.Writer) (*Param, error) {
 		return nil, validationResult
 	}
 
-	generation, err := strconv.ParseInt(mappedArgs[generation], baseConvert, bitSizeConvert)
+	numOfGeneration, err := strconv.ParseInt(mappedArgs[generation], baseConvert, bitSizeConvert)
 	if err != nil {
 		return nil, errors.New(InvalidGenerationError)
 	}
-	if generation < minGeneration {
+	if numOfGeneration < minGeneration {
 		return nil, errors.New(LessThanOneGenerationError)
 	}
 
@@ -97,7 +101,7 @@ func New(args []string, reader io.Reader, writer io.Writer) (*Param, error) {
 	}
 
 	var param = Param{
-		numOfGeneration: int(generation),
+		numOfGeneration: int(numOfGeneration),
 		readStream:      reader,
 		writeStream:     writer,
 	}
