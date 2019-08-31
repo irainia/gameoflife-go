@@ -68,10 +68,6 @@ func New(args []string, reader io.Reader, writer io.Writer) (*Param, error) {
 
 	mappedArgs := make(map[string]string)
 	for i := 0; i < len(args); i++ {
-		if args[i] == emptyArgument {
-			return nil, errors.New(NoInputTypeError)
-		}
-
 		arg := strings.Split(args[i], argumentSeparator)
 		if len(arg) == 2 {
 			switch arg[0] {
