@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/Irainia/gameoflife-go/io"
+	"github.com/Irainia/gameoflife-go/io/file"
 )
 
 const (
@@ -117,5 +118,10 @@ func New(args []string, reader io.Reader, writer io.Writer) (*Param, error) {
 	if reader == nil {
 		return nil, errors.New(NoCustomReaderError)
 	}
-	return nil, errors.New(NoCustomWriterError)
+	if writer == nil {
+		return nil, errors.New(NoCustomWriterError)
+	}
+
+	_, err = file.New(mappedArgs["--inputpath"])
+	return nil, err
 }
