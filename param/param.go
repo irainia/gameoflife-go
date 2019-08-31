@@ -23,7 +23,8 @@ const (
 	UnknownOutputTypeValueError = "unknown output type value"
 	NoOutputPathError           = "no output path provided"
 
-	NoGenerationError = "no generation provided"
+	NoGenerationError      = "no generation provided"
+	InvalidGenerationError = "invalid generation"
 
 	NoSeparatorError = "no separator"
 )
@@ -79,6 +80,10 @@ func New(args []string, custom ...interface{}) (*Param, error) {
 				mappedArgs[arg[0]] = arg[1]
 				continue
 			}
+			if arg[0] == "--generation" {
+				mappedArgs[arg[0]] = arg[1]
+				continue
+			}
 			return nil, errors.New(UnknownArgumentError)
 		}
 		return nil, errors.New(NoSeparatorError)
@@ -93,5 +98,8 @@ func New(args []string, custom ...interface{}) (*Param, error) {
 	if mappedArgs["--outputpath"] == "" {
 		return nil, errors.New(NoOutputPathError)
 	}
-	return nil, errors.New(NoGenerationError)
+	if mappedArgs["--generation"] == "" {
+		return nil, errors.New(NoGenerationError)
+	}
+	return nil, errors.New(InvalidGenerationError)
 }
