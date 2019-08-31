@@ -10,6 +10,7 @@ const (
 	NilArgsError           = "args is nil"
 	EmptyArgsError         = "args is empty"
 	NoInputStreamTypeError = "no input stream type provided"
+	NoSeparatorError       = "no separator"
 )
 
 type Param struct {
@@ -26,5 +27,8 @@ func New(args []string, custom ...interface{}) (*Param, error) {
 	if len(args) == 0 {
 		return nil, errors.New(EmptyArgsError)
 	}
-	return nil, errors.New(NoInputStreamTypeError)
+	if args[0] != "--streamtype" {
+		return nil, errors.New(NoInputStreamTypeError)
+	}
+	return nil, errors.New(NoSeparatorError)
 }

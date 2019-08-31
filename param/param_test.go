@@ -68,3 +68,25 @@ func TestNewShouldReturnNilAndErrorForNoInputStreamType(t *testing.T) {
 		t.Errorf("expected: %s -- actual: %s", expectedError.Error(), actualError.Error())
 	}
 }
+
+func TestNewShouldReturnNilAndErrorForNoSeparatorAssignment(t *testing.T) {
+	var args []string = []string{
+		"--streamtype",
+	}
+	var expectedParam *param.Param = nil
+	var expectedError error = errors.New(param.NoSeparatorError)
+
+	actualParam, actualError := param.New(args)
+
+	if actualParam != expectedParam {
+		t.Error("expected: nil -- actual: not nil")
+		return
+	}
+	if actualError == nil {
+		t.Errorf("expected: not nil -- actual: nil")
+		return
+	}
+	if actualError.Error() != expectedError.Error() {
+		t.Errorf("expected: %s -- actual: %s", expectedError.Error(), actualError.Error())
+	}
+}
