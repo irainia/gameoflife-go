@@ -15,19 +15,19 @@ const (
 
 	UnknownArgumentError = "unknown argument"
 
-	NoInputTypeError           = "no input type provided"
-	UnknownInputTypeValueError = "unknown input type value"
-	NoInputPathError           = "no input path provided"
+	NoInputTypeError           = "no input type provided (use: --inputtype=[input path])"
+	UnknownInputTypeValueError = "unknown input type value (use: file/custom)"
+	NoInputPathError           = "no input path provided (use: --inputtype=[input path])"
 
-	NoOutputTypeError           = "no output type provided"
-	UnknownOutputTypeValueError = "unknown output type value"
-	NoOutputPathError           = "no output path provided"
+	NoOutputTypeError           = "no output type provided (use: --outputtype=[output path])"
+	UnknownOutputTypeValueError = "unknown output type value (use: file/custom)"
+	NoOutputPathError           = "no output path provided (use: --outputtype=[output path])"
 
-	NoGenerationError          = "no generation provided"
-	InvalidGenerationError     = "invalid generation"
-	LessThanOneGenerationError = "generation is less than one"
+	NoGenerationError          = "no generation provided (use: --generation=[number of generation])"
+	InvalidGenerationError     = "invalid generation (should be whole number)"
+	LessThanOneGenerationError = "generation is less than one (should be at least 1)"
 
-	NoSeparatorError = "no separator"
+	NoSeparatorError = "no separator (use separator '=')"
 
 	NoCustomReaderError = "no custom reader provided"
 	NoCustomWriterError = "no custom writer provided"
