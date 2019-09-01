@@ -15,13 +15,13 @@ const (
 
 	UnknownArgumentError = "unknown argument"
 
-	NoInputTypeError           = "no input type provided (use: --inputtype=[input path])"
+	NoInputTypeError           = "no input type provided (use: --inputtype=[file/custom])"
 	UnknownInputTypeValueError = "unknown input type value (use: file/custom)"
-	NoInputPathError           = "no input path provided (use: --inputtype=[input path])"
+	NoInputPathError           = "no input path provided (use: --inputpath=[input path *.cell])"
 
-	NoOutputTypeError           = "no output type provided (use: --outputtype=[output path])"
+	NoOutputTypeError           = "no output type provided (use: --outputtype=[file/custom])"
 	UnknownOutputTypeValueError = "unknown output type value (use: file/custom)"
-	NoOutputPathError           = "no output path provided (use: --outputtype=[output path])"
+	NoOutputPathError           = "no output path provided (use: --outputpath=[output path *.cell])"
 
 	NoGenerationError          = "no generation provided (use: --generation=[number of generation])"
 	InvalidGenerationError     = "invalid generation (should be whole number)"
