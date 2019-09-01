@@ -2,8 +2,11 @@ package param_test
 
 import (
 	"errors"
+	"fmt"
+	"reflect"
 	"testing"
 
+	"github.com/Irainia/gameoflife-go/io"
 	"github.com/Irainia/gameoflife-go/io/file"
 	"github.com/Irainia/gameoflife-go/param"
 )
@@ -435,5 +438,25 @@ func TestGetNumOfGenerationShouldReturnTheSameNumber(t *testing.T) {
 
 	if actualNumOfGeneration != expectedNumOfGeneration {
 		t.Errorf("expected: %d -- actual: %d", expectedNumOfGeneration, actualNumOfGeneration)
+	}
+}
+
+func TestGetReaderShouldReturnTheSameReader(t *testing.T) {
+	var path string = "./input.cell"
+	var args []string = []string{
+		"--inputtype=file",
+		fmt.Sprintf("--inputpath=%s", path),
+		"--outputtype=file",
+		"--outputpath=./output.cell",
+		"--generation=10",
+	}
+	parameter, _ := param.New(args, nil, nil)
+	fileStream, _ := file.New(path)
+	var expectedReader io.Reader = fileStream
+
+	actualReader := parameter.GetReader()
+
+	if reflect.TypeOf(actualReader) != reflect.TypeOf(expectedReader) {
+		t.Errorf("expected: %d -- actual: %d", expectedReader, actualReader)
 	}
 }

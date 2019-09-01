@@ -62,6 +62,10 @@ func (parameter *Param) GetNumOfGeneration() int {
 	return parameter.numOfGeneration
 }
 
+func (parameter *Param) GetReader() io.Reader {
+	return parameter.readStream
+}
+
 func New(args []string, reader io.Reader, writer io.Writer) (*Param, error) {
 	if args == nil {
 		return nil, errors.New(NilArgsError)
