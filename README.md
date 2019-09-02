@@ -23,25 +23,27 @@ The initial pattern constitutes the seed of the system. The first generation is 
 
 The Go programming language version `go1.12.9` should be installed. Go to [this link](https://golang.org/doc/install) and follow the instructions to install based on the system. To check the installation, we can check its version by running the following command on the terminal:
 
-```
+```zsh
 go version
 ```
 
 Example of the output:
 
-```
+```zsh
 go version go1.12.9 darwin/amd64
 ```
 
 ### Go Dep
 
 The Dep, for dependency management tool for Go, version `v0.5.4` should be installed. Go to [this link](https://github.com/golang/dep) and follow the instruction to install based on the system. To pcheck the installation, we can check its version by running the following command on the terminal:
-```
+
+```zsh
 dep version
 ```
 
 Example of the output:
-```
+
+```zsh
 dep:
  version     : v0.5.4
  build date  : 2019-06-14
@@ -55,14 +57,16 @@ dep:
 ## How to Test
 
 In order to test, go to this project root directory and run the following command:
-```
+
+```zsh
 make test
 ```
 
 ## How to Build
 
 In order to build, go to this project root directory and run the following command:
-```
+
+```zsh
 make build
 ```
 
@@ -71,7 +75,8 @@ A new directory named `bin` (if not already there) will be created, containing t
 ## How to Run
 
 After building the project, in order to run, go to this project root directory and run the following command, fill in the [alphabet] value yourself:
-```
+
+```zsh
 make run inputtype=[a] inputpath=[b] outputtype=[c] outputpath=[d] generation=[e]
 ```
 
@@ -84,7 +89,8 @@ Notes:
 * [e]: number of generation (should be whole number more than zero)
 
 Example:
-```
+
+```zsh
 make run inputtype=file inputpath=./input/glider.cell outputtype=file outputpath=./glider.cell generation=5
 ```
 
