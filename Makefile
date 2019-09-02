@@ -8,4 +8,4 @@ build: ensure
 	go build -o ./bin/gameoflife main.go
 
 run:
-	./bin/gameoflife
+	./bin/gameoflife --inputtype=$(inputtype) --inputpath=$(inputpath) --outputtype=$(outputtype) --outputpath=$(outputpath) --generation=$(generation)
