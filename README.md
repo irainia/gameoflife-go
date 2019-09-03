@@ -103,3 +103,27 @@ The input and output file has the following limitations:
 * the shape of the cell state should be in rectangle
 * providing an all-dead state will result in error
 * file extension should be `*.cell`
+
+Warning:
+
+If `inputtype` or `outputtype` or both are set to be `custom`, then you need to provide the custom type that abide by the interface in `contract.go` inside `io` directory of this project. So, for `inputtype`, you have to provide a type that follows `io.Reader` while for `outputtype` would be `io.Writer`. In contrast, you don't have to put value to `inputpath` for `inputtype` and `outputpath` for `outputtype` respectively.
+
+Example `inputtype`, for the input will be custom, while the output will be in the form of file.
+
+```zsh
+make run inputtype=custom outputtype=file outputpath=./glider.cell generation=5
+```
+
+Example `outputtype`, for the output will be custom, while the input will be from a file.
+
+```zsh
+make run inputtype=file inputpath=./input/glider.cell outputtype=custom generation=5
+```
+
+Example for both input and output will be custom.
+
+```zsh
+make run inputtype=custom outputtype=custom generation=5
+```
+
+*Don't forget to provde the `io.Reader` or `io.Writer` or both when initializing the `param`*
