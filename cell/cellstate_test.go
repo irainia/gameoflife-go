@@ -262,80 +262,80 @@ func TestGetCurrentGeneration(t *testing.T) {
 			t.Errorf("expected: %d -- actual: %d", len(expectedGeneration), len(actualGeneration))
 		}
 	})
-}
 
-func TestGetNextGenerationShouldKillLivingCellWithLessThanTwoNeighbors(t *testing.T) {
-	var initialGeneration [][]bool = [][]bool{
-		{true, true},
-	}
-	cellState, _ := cell.New(initialGeneration)
-	var expectedGeneration [][]bool = make([][]bool, 0)
+	t.Run("should kill living cell with less than two neighbors", func(t *testing.T) {
+		var initialGeneration [][]bool = [][]bool{
+			{true, true},
+		}
+		cellState, _ := cell.New(initialGeneration)
+		var expectedGeneration [][]bool = make([][]bool, 0)
 
-	actualGeneration := cellState.GetNextState().GetGeneration()
+		actualGeneration := cellState.GetNextState().GetGeneration()
 
-	if len(actualGeneration) != len(expectedGeneration) {
-		t.Errorf("expected: %d -- actual: %d", len(expectedGeneration), len(actualGeneration))
-	}
-}
+		if len(actualGeneration) != len(expectedGeneration) {
+			t.Errorf("expected: %d -- actual: %d", len(expectedGeneration), len(actualGeneration))
+		}
+	})
 
-func TestGetNextGenerationShouldSurviveLivingCellWithTwoNeighbors(t *testing.T) {
-	var initialGeneration [][]bool = [][]bool{
-		{false, true, false},
-		{true, false, true},
-		{false, true, false},
-	}
-	cellState, _ := cell.New(initialGeneration)
-	var expectedGeneration [][]bool = [][]bool{
-		{false, true, false},
-		{true, false, true},
-		{false, true, false},
-	}
+	t.Run("should survive living cell with two neighbors", func(t *testing.T) {
+		var initialGeneration [][]bool = [][]bool{
+			{false, true, false},
+			{true, false, true},
+			{false, true, false},
+		}
+		cellState, _ := cell.New(initialGeneration)
+		var expectedGeneration [][]bool = [][]bool{
+			{false, true, false},
+			{true, false, true},
+			{false, true, false},
+		}
 
-	actualGeneration := cellState.GetNextState().GetGeneration()
+		actualGeneration := cellState.GetNextState().GetGeneration()
 
-	err := elementWiseCheck(expectedGeneration, actualGeneration)
-	if err != nil {
-		t.Error(err.Error())
-	}
-}
+		err := elementWiseCheck(expectedGeneration, actualGeneration)
+		if err != nil {
+			t.Error(err.Error())
+		}
+	})
 
-func TestGetNextGenerationShouldSurviveOrReproduceLivingCellWithThreeNeighbors(t *testing.T) {
-	var initialGeneration [][]bool = [][]bool{
-		{true, true, true},
-	}
-	cellState, _ := cell.New(initialGeneration)
-	var expectedGeneration [][]bool = [][]bool{
-		{true},
-		{true},
-		{true},
-	}
+	t.Run("should survive or reproduce living cell with three neighbors", func(t *testing.T) {
+		var initialGeneration [][]bool = [][]bool{
+			{true, true, true},
+		}
+		cellState, _ := cell.New(initialGeneration)
+		var expectedGeneration [][]bool = [][]bool{
+			{true},
+			{true},
+			{true},
+		}
 
-	actualGeneration := cellState.GetNextState().GetGeneration()
+		actualGeneration := cellState.GetNextState().GetGeneration()
 
-	err := elementWiseCheck(expectedGeneration, actualGeneration)
-	if err != nil {
-		t.Error(err.Error())
-	}
-}
+		err := elementWiseCheck(expectedGeneration, actualGeneration)
+		if err != nil {
+			t.Error(err.Error())
+		}
+	})
 
-func TestGetNextGenerationShouldKillLivingCellWithMoreThanThreeNeighbors(t *testing.T) {
-	var initialGeneration [][]bool = [][]bool{
-		{false, false, true},
-		{false, true, false},
-		{true, false, true},
-	}
-	cellState, _ := cell.New(initialGeneration)
-	var expectedGeneration [][]bool = [][]bool{
-		{true, true},
-		{true, false},
-	}
+	t.Run("shoud kill living cell with more than three neighbors", func(t *testing.T) {
+		var initialGeneration [][]bool = [][]bool{
+			{false, false, true},
+			{false, true, false},
+			{true, false, true},
+		}
+		cellState, _ := cell.New(initialGeneration)
+		var expectedGeneration [][]bool = [][]bool{
+			{true, true},
+			{true, false},
+		}
 
-	actualGeneration := cellState.GetNextState().GetGeneration()
+		actualGeneration := cellState.GetNextState().GetGeneration()
 
-	err := elementWiseCheck(expectedGeneration, actualGeneration)
-	if err != nil {
-		t.Error(err.Error())
-	}
+		err := elementWiseCheck(expectedGeneration, actualGeneration)
+		if err != nil {
+			t.Error(err.Error())
+		}
+	})
 }
 
 func TestStringConvertTrueToO(t *testing.T) {
