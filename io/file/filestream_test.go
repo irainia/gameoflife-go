@@ -148,90 +148,92 @@ func TestNew(t *testing.T) {
 	})
 }
 
-func TestReadShouldReturnNilAndErrorForNonExistentFile(t *testing.T) {
-	var nonExistentFile = "nonexistent.cell"
-	fileStream, _ := file.New(nonExistentFile)
-	var expectedError error = errors.New(file.NotFoundFileError)
+func TestRead(t *testing.T) {
+	t.Run("should return nil and error for non existent file", func(t *testing.T) {
+		var nonExistentFile = "nonexistent.cell"
+		fileStream, _ := file.New(nonExistentFile)
+		var expectedError error = errors.New(file.NotFoundFileError)
 
-	actualGeneration, actualError := fileStream.Read()
+		actualGeneration, actualError := fileStream.Read()
 
-	if actualGeneration != nil {
-		t.Error("expected: nil -- actual: not nil")
-		return
-	}
-	if actualError == nil {
-		t.Error("expected: not nil -- actual: nil")
-		return
-	}
-	if actualError.Error() != expectedError.Error() {
-		t.Errorf("expected: %s -- actual: %s", expectedError.Error(), actualError.Error())
-	}
-}
+		if actualGeneration != nil {
+			t.Error("expected: nil -- actual: not nil")
+			return
+		}
+		if actualError == nil {
+			t.Error("expected: not nil -- actual: nil")
+			return
+		}
+		if actualError.Error() != expectedError.Error() {
+			t.Errorf("expected: %s -- actual: %s", expectedError.Error(), actualError.Error())
+		}
+	})
 
-func TestReadShouldReturnNilAndErrorForEmptyFile(t *testing.T) {
-	path := fmt.Sprintf("%s%s", cellDirectory, emptyCell)
-	fileStream, _ := file.New(path)
-	var expectedError error = errors.New(file.EmptyFileError)
+	t.Run("should return nil and error for empty file", func(t *testing.T) {
+		path := fmt.Sprintf("%s%s", cellDirectory, emptyCell)
+		fileStream, _ := file.New(path)
+		var expectedError error = errors.New(file.EmptyFileError)
 
-	actualGeneration, actualError := fileStream.Read()
+		actualGeneration, actualError := fileStream.Read()
 
-	if actualGeneration != nil {
-		t.Error("expected: nil -- actual: not nil")
-		return
-	}
-	if actualError == nil {
-		t.Error("expected: not nil -- actual: nil")
-		return
-	}
-	if actualError.Error() != expectedError.Error() {
-		t.Errorf("expected: %s -- actual: %s", expectedError.Error(), actualError.Error())
-	}
-}
+		if actualGeneration != nil {
+			t.Error("expected: nil -- actual: not nil")
+			return
+		}
+		if actualError == nil {
+			t.Error("expected: not nil -- actual: nil")
+			return
+		}
+		if actualError.Error() != expectedError.Error() {
+			t.Errorf("expected: %s -- actual: %s", expectedError.Error(), actualError.Error())
+		}
+	})
 
-func TestReadShouldReturnNilAndErrorForInvalidFormat(t *testing.T) {
-	path := fmt.Sprintf("%s%s", cellDirectory, invalidCell)
-	fileStream, _ := file.New(path)
-	var expectedError error = errors.New(file.InvalidFormatError)
+	t.Run("should return nil and error for invalid format", func(t *testing.T) {
+		path := fmt.Sprintf("%s%s", cellDirectory, invalidCell)
+		fileStream, _ := file.New(path)
+		var expectedError error = errors.New(file.InvalidFormatError)
 
-	actualGeneration, actualError := fileStream.Read()
+		actualGeneration, actualError := fileStream.Read()
 
-	if actualGeneration != nil {
-		t.Error("expected: nil -- actual: not nil")
-		return
-	}
-	if actualError == nil {
-		t.Error("expected: not nil -- actual: nil")
-		return
-	}
-	if actualError.Error() != expectedError.Error() {
-		t.Errorf("expected: %s -- actual: %s", expectedError.Error(), actualError.Error())
-	}
-}
+		if actualGeneration != nil {
+			t.Error("expected: nil -- actual: not nil")
+			return
+		}
+		if actualError == nil {
+			t.Error("expected: not nil -- actual: nil")
+			return
+		}
+		if actualError.Error() != expectedError.Error() {
+			t.Errorf("expected: %s -- actual: %s", expectedError.Error(), actualError.Error())
+		}
+	})
 
-func TestReadShouldReturnGenerationAndNilForValidFile(t *testing.T) {
-	path := fmt.Sprintf("%s%s", cellDirectory, tubCell)
-	fileStream, _ := file.New(path)
-	expectedGeneration := tubGeneration
-	var expectedError error = nil
+	t.Run("should return generation and nil for valid file", func(t *testing.T) {
+		path := fmt.Sprintf("%s%s", cellDirectory, tubCell)
+		fileStream, _ := file.New(path)
+		expectedGeneration := tubGeneration
+		var expectedError error = nil
 
-	actualGeneration, actualError := fileStream.Read()
+		actualGeneration, actualError := fileStream.Read()
 
-	if actualGeneration == nil {
-		t.Error("expected: not nil -- actual: nil")
-		return
-	}
-	if actualError != expectedError {
-		t.Errorf("expected: nil -- actual: %s", actualError.Error())
-		return
-	}
-	for i := 0; i < len(actualGeneration); i++ {
-		for j := 0; j < len(actualGeneration[i]); j++ {
-			if actualGeneration[i][j] != expectedGeneration[i][j] {
-				t.Errorf("expected: [%d][%d] [%t] -- actual: [%d][%d] [%t]",
-					i, j, expectedGeneration[i][j], i, j, actualGeneration[i][j])
+		if actualGeneration == nil {
+			t.Error("expected: not nil -- actual: nil")
+			return
+		}
+		if actualError != expectedError {
+			t.Errorf("expected: nil -- actual: %s", actualError.Error())
+			return
+		}
+		for i := 0; i < len(actualGeneration); i++ {
+			for j := 0; j < len(actualGeneration[i]); j++ {
+				if actualGeneration[i][j] != expectedGeneration[i][j] {
+					t.Errorf("expected: [%d][%d] [%t] -- actual: [%d][%d] [%t]",
+						i, j, expectedGeneration[i][j], i, j, actualGeneration[i][j])
+				}
 			}
 		}
-	}
+	})
 }
 
 func TestWriteShouldReturnErrorForNilGeneration(t *testing.T) {
