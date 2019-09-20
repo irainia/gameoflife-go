@@ -338,47 +338,49 @@ func TestGetCurrentGeneration(t *testing.T) {
 	})
 }
 
-func TestStringConvertTrueToO(t *testing.T) {
-	var initialGeneration [][]bool = [][]bool{
-		{true},
-	}
-	cellState, _ := cell.New(initialGeneration)
-	expectedString := "o"
+func TestString(t *testing.T) {
+	t.Run("convert True -> 0", func(t *testing.T) {
+		var initialGeneration [][]bool = [][]bool{
+			{true},
+		}
+		cellState, _ := cell.New(initialGeneration)
+		expectedString := "o"
 
-	actualString := cellState.String()
+		actualString := cellState.String()
 
-	if actualString != expectedString {
-		t.Errorf("expected: %s -- actual: %s", expectedString, actualString)
-	}
-}
+		if actualString != expectedString {
+			t.Errorf("expected: %s -- actual: %s", expectedString, actualString)
+		}
+	})
 
-func TestStringConvertFalseToDash(t *testing.T) {
-	var initialGeneration [][]bool = [][]bool{
-		{true, false, true},
-	}
-	cellState, _ := cell.New(initialGeneration)
-	expectedString := "o-o"
+	t.Run("convert False -> '-'", func(t *testing.T) {
+		var initialGeneration [][]bool = [][]bool{
+			{true, false, true},
+		}
+		cellState, _ := cell.New(initialGeneration)
+		expectedString := "o-o"
 
-	actualString := cellState.String()
+		actualString := cellState.String()
 
-	if actualString != expectedString {
-		t.Errorf("expected: %s -- actual: %s", expectedString, actualString)
-	}
-}
+		if actualString != expectedString {
+			t.Errorf("expected: %s -- actual: %s", expectedString, actualString)
+		}
+	})
 
-func TestStringAddNewLineEachRowExceptLastRow(t *testing.T) {
-	var initialGeneration [][]bool = [][]bool{
-		{true, true},
-		{true, true},
-	}
-	cellState, _ := cell.New(initialGeneration)
-	expectedString := "oo\noo"
+	t.Run("add new line each row except last row", func(t *testing.T) {
+		var initialGeneration [][]bool = [][]bool{
+			{true, true},
+			{true, true},
+		}
+		cellState, _ := cell.New(initialGeneration)
+		expectedString := "oo\noo"
 
-	actualString := cellState.String()
+		actualString := cellState.String()
 
-	if actualString != expectedString {
-		t.Errorf("expected: %s -- actual: %s", expectedString, actualString)
-	}
+		if actualString != expectedString {
+			t.Errorf("expected: %s -- actual: %s", expectedString, actualString)
+		}
+	})
 }
 
 func elementWiseCheck(expectedGeneration, actualGeneration [][]bool) error {
