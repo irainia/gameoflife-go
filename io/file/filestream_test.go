@@ -1,7 +1,6 @@
 package file_test
 
 import (
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -9,6 +8,7 @@ import (
 
 	"github.com/Irainia/gameoflife-go/cell"
 	"github.com/Irainia/gameoflife-go/io/file"
+	"github.com/stretchr/testify/assert"
 )
 
 const (
@@ -94,57 +94,31 @@ func teardown() {
 
 func TestNew(t *testing.T) {
 	t.Run("should return nil and error for empty path", func(t *testing.T) {
-		var expectedFileStream *file.FileStream = nil
-		var expectedError error = errors.New(file.PathEmptyError)
+		var expectedError = file.PathEmptyError
 
 		actualFileStream, actualError := file.New("")
 
-		if actualFileStream != expectedFileStream {
-			t.Errorf("expected: nil -- actual: %s", actualFileStream)
-			return
-		}
-		if actualError == nil {
-			t.Errorf("expected: not nil -- actual: nil")
-			return
-		}
-		if actualError.Error() != expectedError.Error() {
-			t.Errorf("expected: %s -- actual: %s", expectedError.Error(), actualError.Error())
-		}
+		assert.Nil(t, actualFileStream)
+		assert.EqualError(t, actualError, expectedError)
 	})
 
 	t.Run("should return nil and error for invalid file extension", func(t *testing.T) {
 		var path string = "input"
-		var expectedFileStream *file.FileStream = nil
-		var expectedError error = errors.New(file.InvalidExtensionError)
+		var expectedError = file.InvalidExtensionError
 
 		actualFileStream, actualError := file.New(path)
 
-		if actualFileStream != expectedFileStream {
-			t.Errorf("expected: nil -- actual: %s", actualFileStream)
-			return
-		}
-		if actualError == nil {
-			t.Errorf("expected: not nil -- actual: nil")
-			return
-		}
-		if actualError.Error() != expectedError.Error() {
-			t.Errorf("expected: %s -- actual: %s", expectedError.Error(), actualError.Error())
-		}
+		assert.Nil(t, actualFileStream)
+		assert.EqualError(t, actualError, expectedError)
 	})
 
 	t.Run("should return file stream and nil for valid file extension", func(t *testing.T) {
 		var path string = "input.cell"
-		var expectedError error = nil
 
 		actualFileStream, actualError := file.New(path)
 
-		if actualFileStream == nil {
-			t.Error("expected: not nil -- actual: nil")
-			return
-		}
-		if actualError != expectedError {
-			t.Errorf("expected: nil -- actual: %s", actualError)
-		}
+		assert.NotNil(t, actualFileStream)
+		assert.Nil(t, actualError)
 	})
 }
 
@@ -152,87 +126,45 @@ func TestRead(t *testing.T) {
 	t.Run("should return nil and error for non existent file", func(t *testing.T) {
 		var nonExistentFile = "nonexistent.cell"
 		fileStream, _ := file.New(nonExistentFile)
-		var expectedError error = errors.New(file.NotFoundFileError)
+		var expectedError = file.NotFoundFileError
 
 		actualGeneration, actualError := fileStream.Read()
 
-		if actualGeneration != nil {
-			t.Error("expected: nil -- actual: not nil")
-			return
-		}
-		if actualError == nil {
-			t.Error("expected: not nil -- actual: nil")
-			return
-		}
-		if actualError.Error() != expectedError.Error() {
-			t.Errorf("expected: %s -- actual: %s", expectedError.Error(), actualError.Error())
-		}
+		assert.Nil(t, actualGeneration)
+		assert.EqualError(t, actualError, expectedError)
 	})
 
 	t.Run("should return nil and error for empty file", func(t *testing.T) {
 		path := fmt.Sprintf("%s%s", cellDirectory, emptyCell)
 		fileStream, _ := file.New(path)
-		var expectedError error = errors.New(file.EmptyFileError)
+		var expectedError = file.EmptyFileError
 
 		actualGeneration, actualError := fileStream.Read()
 
-		if actualGeneration != nil {
-			t.Error("expected: nil -- actual: not nil")
-			return
-		}
-		if actualError == nil {
-			t.Error("expected: not nil -- actual: nil")
-			return
-		}
-		if actualError.Error() != expectedError.Error() {
-			t.Errorf("expected: %s -- actual: %s", expectedError.Error(), actualError.Error())
-		}
+		assert.Nil(t, actualGeneration)
+		assert.EqualError(t, actualError, expectedError)
 	})
 
 	t.Run("should return nil and error for invalid format", func(t *testing.T) {
 		path := fmt.Sprintf("%s%s", cellDirectory, invalidCell)
 		fileStream, _ := file.New(path)
-		var expectedError error = errors.New(file.InvalidFormatError)
+		var expectedError = file.InvalidFormatError
 
 		actualGeneration, actualError := fileStream.Read()
 
-		if actualGeneration != nil {
-			t.Error("expected: nil -- actual: not nil")
-			return
-		}
-		if actualError == nil {
-			t.Error("expected: not nil -- actual: nil")
-			return
-		}
-		if actualError.Error() != expectedError.Error() {
-			t.Errorf("expected: %s -- actual: %s", expectedError.Error(), actualError.Error())
-		}
+		assert.Nil(t, actualGeneration)
+		assert.EqualError(t, actualError, expectedError)
 	})
 
 	t.Run("should return generation and nil for valid file", func(t *testing.T) {
 		path := fmt.Sprintf("%s%s", cellDirectory, tubCell)
 		fileStream, _ := file.New(path)
 		expectedGeneration := tubGeneration
-		var expectedError error = nil
 
 		actualGeneration, actualError := fileStream.Read()
 
-		if actualGeneration == nil {
-			t.Error("expected: not nil -- actual: nil")
-			return
-		}
-		if actualError != expectedError {
-			t.Errorf("expected: nil -- actual: %s", actualError.Error())
-			return
-		}
-		for i := 0; i < len(actualGeneration); i++ {
-			for j := 0; j < len(actualGeneration[i]); j++ {
-				if actualGeneration[i][j] != expectedGeneration[i][j] {
-					t.Errorf("expected: [%d][%d] [%t] -- actual: [%d][%d] [%t]",
-						i, j, expectedGeneration[i][j], i, j, actualGeneration[i][j])
-				}
-			}
-		}
+		assert.EqualValues(t, expectedGeneration, actualGeneration)
+		assert.Nil(t, actualError)
 	})
 }
 
@@ -241,55 +173,35 @@ func TestWrite(t *testing.T) {
 		path := fmt.Sprintf("%s%s", cellDirectory, gliderCell)
 		fileStream, _ := file.New(path)
 		var nilGeneration [][]bool = nil
-		var expectedError error = errors.New(file.NilGenerationError)
+		var expectedError = file.NilGenerationError
 
 		actualError := fileStream.Write(nilGeneration)
 
-		if actualError == nil {
-			t.Error("expected: not nil -- actual: nil")
-			return
-		}
-		if actualError.Error() != expectedError.Error() {
-			t.Errorf("expected: %s -- actual: %s", expectedError.Error(), actualError.Error())
-		}
+		assert.EqualError(t, actualError, expectedError)
 	})
 
 	t.Run("should return error for empty generation", func(t *testing.T) {
 		path := fmt.Sprintf("%s%s", cellDirectory, gliderCell)
 		fileStream, _ := file.New(path)
 		var emptyGeneration [][]bool = make([][]bool, 0)
-		var expectedError error = errors.New(file.EmptyGenerationError)
+		var expectedError = file.EmptyGenerationError
 
 		actualError := fileStream.Write(emptyGeneration)
 
-		if actualError == nil {
-			t.Error("expected: not nil -- actual: nil")
-			return
-		}
-		if actualError.Error() != expectedError.Error() {
-			t.Errorf("expected: %s -- actual: %s", expectedError.Error(), actualError.Error())
-		}
+		assert.EqualError(t, actualError, expectedError)
 	})
 
 	t.Run("should return nil for valid generation", func(t *testing.T) {
 		path := fmt.Sprintf("%s%s", cellDirectory, gliderCell)
 		fileStream, _ := file.New(path)
 		var validGeneration [][]bool = gliderGeneration
-		var expectedError error = nil
 		var expectedGeneration string = gliderGenerationString
 
 		actualError := fileStream.Write(validGeneration)
-
-		if actualError != expectedError {
-			t.Errorf("expected: nil -- actual: %s", actualError.Error())
-			return
-		}
 		actualGeneration, err := ioutil.ReadFile(path)
-		if err != nil {
-			panic(err)
-		}
-		if string(actualGeneration) != expectedGeneration {
-			t.Errorf("expected: %s -- actual: %s", expectedGeneration, string(actualGeneration))
-		}
+
+		assert.Nil(t, actualError)
+		assert.Nil(t, err)
+		assert.Equal(t, expectedGeneration, string(actualGeneration))
 	})
 }
