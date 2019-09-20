@@ -445,42 +445,46 @@ func TestGetNumberOfGeneration(t *testing.T) {
 	})
 }
 
-func TestGetReaderShouldReturnTheSameReader(t *testing.T) {
-	var path string = "./input.cell"
-	var args []string = []string{
-		"--inputtype=file",
-		fmt.Sprintf("--inputpath=%s", path),
-		"--outputtype=file",
-		"--outputpath=./output.cell",
-		"--generation=10",
-	}
-	parameter, _ := param.New(args, nil, nil)
-	fileStream, _ := file.New(path)
-	var expectedReader io.Reader = fileStream
+func TestGetReader(t *testing.T) {
+	t.Run("should return the same reader as parameter", func(t *testing.T) {
+		var path string = "./input.cell"
+		var args []string = []string{
+			"--inputtype=file",
+			fmt.Sprintf("--inputpath=%s", path),
+			"--outputtype=file",
+			"--outputpath=./output.cell",
+			"--generation=10",
+		}
+		parameter, _ := param.New(args, nil, nil)
+		fileStream, _ := file.New(path)
+		var expectedReader io.Reader = fileStream
 
-	actualReader := parameter.GetReader()
+		actualReader := parameter.GetReader()
 
-	if reflect.TypeOf(actualReader) != reflect.TypeOf(expectedReader) {
-		t.Errorf("expected: %d -- actual: %d", expectedReader, actualReader)
-	}
+		if reflect.TypeOf(actualReader) != reflect.TypeOf(expectedReader) {
+			t.Errorf("expected: %d -- actual: %d", expectedReader, actualReader)
+		}
+	})
 }
 
-func TestGetWriterShouldReturnTheSameWriter(t *testing.T) {
-	var path string = "./output.cell"
-	var args []string = []string{
-		"--inputtype=file",
-		"--inputpath=./input.cell",
-		"--outputtype=file",
-		fmt.Sprintf("--outputpath=%s", path),
-		"--generation=10",
-	}
-	parameter, _ := param.New(args, nil, nil)
-	fileStream, _ := file.New(path)
-	var expectedReader io.Writer = fileStream
+func TestGetWriter(t *testing.T) {
+	t.Run("should return the same writer as parameter", func(t *testing.T) {
+		var path string = "./output.cell"
+		var args []string = []string{
+			"--inputtype=file",
+			"--inputpath=./input.cell",
+			"--outputtype=file",
+			fmt.Sprintf("--outputpath=%s", path),
+			"--generation=10",
+		}
+		parameter, _ := param.New(args, nil, nil)
+		fileStream, _ := file.New(path)
+		var expectedReader io.Writer = fileStream
 
-	actualReader := parameter.GetWriter()
+		actualReader := parameter.GetWriter()
 
-	if reflect.TypeOf(actualReader) != reflect.TypeOf(expectedReader) {
-		t.Errorf("expected: %d -- actual: %d", expectedReader, actualReader)
-	}
+		if reflect.TypeOf(actualReader) != reflect.TypeOf(expectedReader) {
+			t.Errorf("expected: %d -- actual: %d", expectedReader, actualReader)
+		}
+	})
 }
