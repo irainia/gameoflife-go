@@ -74,192 +74,194 @@ func TestNew(t *testing.T) {
 	})
 }
 
-func TestGetCurrentGenerationShouldReturnInitialGeneration(t *testing.T) {
-	var initialGeneration [][]bool = [][]bool{
-		{false, true, false},
-		{false, false, true},
-		{true, true, true},
-	}
-	cellState, _ := cell.New(initialGeneration)
-	var expectedGeneration [][]bool = initialGeneration
+func TestGetCurrentGeneration(t *testing.T) {
+	t.Run("should return initial generation", func(t *testing.T) {
+		var initialGeneration [][]bool = [][]bool{
+			{false, true, false},
+			{false, false, true},
+			{true, true, true},
+		}
+		cellState, _ := cell.New(initialGeneration)
+		var expectedGeneration [][]bool = initialGeneration
 
-	actualGeneration := cellState.GetGeneration()
+		actualGeneration := cellState.GetGeneration()
 
-	err := elementWiseCheck(expectedGeneration, actualGeneration)
-	if err != nil {
-		t.Error(err.Error())
-	}
-}
+		err := elementWiseCheck(expectedGeneration, actualGeneration)
+		if err != nil {
+			t.Error(err.Error())
+		}
+	})
 
-func TestGetCurrentGenerationShouldBeImmutableOnCreation(t *testing.T) {
-	var initialGeneration [][]bool = [][]bool{
-		{false, true, false},
-		{false, false, true},
-		{true, true, true},
-	}
-	cellState, _ := cell.New(initialGeneration)
-	var expectedGeneration [][]bool = [][]bool{
-		{false, true, false},
-		{false, false, true},
-		{true, true, true},
-	}
+	t.Run("should be immutable on creation", func(t *testing.T) {
+		var initialGeneration [][]bool = [][]bool{
+			{false, true, false},
+			{false, false, true},
+			{true, true, true},
+		}
+		cellState, _ := cell.New(initialGeneration)
+		var expectedGeneration [][]bool = [][]bool{
+			{false, true, false},
+			{false, false, true},
+			{true, true, true},
+		}
 
-	initialGeneration[1][1] = !initialGeneration[1][1]
-	actualGeneration := cellState.GetGeneration()
+		initialGeneration[1][1] = !initialGeneration[1][1]
+		actualGeneration := cellState.GetGeneration()
 
-	err := elementWiseCheck(expectedGeneration, actualGeneration)
-	if err != nil {
-		t.Error(err.Error())
-	}
-}
+		err := elementWiseCheck(expectedGeneration, actualGeneration)
+		if err != nil {
+			t.Error(err.Error())
+		}
+	})
 
-func TestGetCurrentGenerationShouldBeImmutableOnRetrieval(t *testing.T) {
-	var initialGeneration [][]bool = [][]bool{
-		{false, true, false},
-		{false, false, true},
-		{true, true, true},
-	}
-	cellState, _ := cell.New(initialGeneration)
-	var expectedGeneration [][]bool = [][]bool{
-		{false, true, false},
-		{false, false, true},
-		{true, true, true},
-	}
+	t.Run("should be immutable on retrieval", func(t *testing.T) {
+		var initialGeneration [][]bool = [][]bool{
+			{false, true, false},
+			{false, false, true},
+			{true, true, true},
+		}
+		cellState, _ := cell.New(initialGeneration)
+		var expectedGeneration [][]bool = [][]bool{
+			{false, true, false},
+			{false, false, true},
+			{true, true, true},
+		}
 
-	temporaryState := cellState.GetGeneration()
-	temporaryState[1][1] = !temporaryState[1][1]
-	actualGeneration := cellState.GetGeneration()
+		temporaryState := cellState.GetGeneration()
+		temporaryState[1][1] = !temporaryState[1][1]
+		actualGeneration := cellState.GetGeneration()
 
-	err := elementWiseCheck(expectedGeneration, actualGeneration)
-	if err != nil {
-		t.Error(err.Error())
-	}
-}
+		err := elementWiseCheck(expectedGeneration, actualGeneration)
+		if err != nil {
+			t.Error(err.Error())
+		}
+	})
 
-func TestGetCurrentGenerationShouldTrimRightSideToNearestLivingCell(t *testing.T) {
-	var initialGeneration [][]bool = [][]bool{
-		{true, true, false},
-		{true, true, false},
-	}
-	cellState, _ := cell.New(initialGeneration)
-	var expectedGeneration [][]bool = [][]bool{
-		{true, true},
-		{true, true},
-	}
+	t.Run("should trim right side to nearest living cell", func(t *testing.T) {
+		var initialGeneration [][]bool = [][]bool{
+			{true, true, false},
+			{true, true, false},
+		}
+		cellState, _ := cell.New(initialGeneration)
+		var expectedGeneration [][]bool = [][]bool{
+			{true, true},
+			{true, true},
+		}
 
-	actualGeneration := cellState.GetGeneration()
+		actualGeneration := cellState.GetGeneration()
 
-	if len(actualGeneration) != len(expectedGeneration) {
-		t.Errorf("expected: %d -- actual: %d", len(expectedGeneration), len(actualGeneration))
-		return
-	}
-	if len(actualGeneration[0]) != len(expectedGeneration[0]) {
-		t.Errorf("expected: %d -- actual: %d", len(expectedGeneration[0]), len(actualGeneration[0]))
-		return
-	}
-	err := elementWiseCheck(expectedGeneration, actualGeneration)
-	if err != nil {
-		t.Error(err.Error())
-	}
-}
+		if len(actualGeneration) != len(expectedGeneration) {
+			t.Errorf("expected: %d -- actual: %d", len(expectedGeneration), len(actualGeneration))
+			return
+		}
+		if len(actualGeneration[0]) != len(expectedGeneration[0]) {
+			t.Errorf("expected: %d -- actual: %d", len(expectedGeneration[0]), len(actualGeneration[0]))
+			return
+		}
+		err := elementWiseCheck(expectedGeneration, actualGeneration)
+		if err != nil {
+			t.Error(err.Error())
+		}
+	})
 
-func TestGetCurrentGenerationShouldTrimBottomSideToNearestLivingCell(t *testing.T) {
-	var initialGeneration [][]bool = [][]bool{
-		{true, true},
-		{true, true},
-		{false, false},
-	}
-	cellState, _ := cell.New(initialGeneration)
-	var expectedGeneration [][]bool = [][]bool{
-		{true, true},
-		{true, true},
-	}
+	t.Run("should trim bottom side to nearest living cell", func(t *testing.T) {
+		var initialGeneration [][]bool = [][]bool{
+			{true, true},
+			{true, true},
+			{false, false},
+		}
+		cellState, _ := cell.New(initialGeneration)
+		var expectedGeneration [][]bool = [][]bool{
+			{true, true},
+			{true, true},
+		}
 
-	actualGeneration := cellState.GetGeneration()
+		actualGeneration := cellState.GetGeneration()
 
-	if len(actualGeneration) != len(expectedGeneration) {
-		t.Errorf("expected: %d -- actual: %d", len(expectedGeneration), len(actualGeneration))
-		return
-	}
-	if len(actualGeneration[0]) != len(expectedGeneration[0]) {
-		t.Errorf("expected: %d -- actual: %d", len(expectedGeneration[0]), len(actualGeneration[0]))
-		return
-	}
-	err := elementWiseCheck(expectedGeneration, actualGeneration)
-	if err != nil {
-		t.Error(err.Error())
-	}
-}
+		if len(actualGeneration) != len(expectedGeneration) {
+			t.Errorf("expected: %d -- actual: %d", len(expectedGeneration), len(actualGeneration))
+			return
+		}
+		if len(actualGeneration[0]) != len(expectedGeneration[0]) {
+			t.Errorf("expected: %d -- actual: %d", len(expectedGeneration[0]), len(actualGeneration[0]))
+			return
+		}
+		err := elementWiseCheck(expectedGeneration, actualGeneration)
+		if err != nil {
+			t.Error(err.Error())
+		}
+	})
 
-func TestGetCurrentGenerationShouldTrimLeftSideToNearestLivingCell(t *testing.T) {
-	var initialGeneration [][]bool = [][]bool{
-		{false, true, true},
-		{false, true, true},
-	}
-	cellState, _ := cell.New(initialGeneration)
-	var expectedGeneration [][]bool = [][]bool{
-		{true, true},
-		{true, true},
-	}
+	t.Run("should trim left side to nearest living cell", func(t *testing.T) {
+		var initialGeneration [][]bool = [][]bool{
+			{false, true, true},
+			{false, true, true},
+		}
+		cellState, _ := cell.New(initialGeneration)
+		var expectedGeneration [][]bool = [][]bool{
+			{true, true},
+			{true, true},
+		}
 
-	actualGeneration := cellState.GetGeneration()
+		actualGeneration := cellState.GetGeneration()
 
-	if len(actualGeneration) != len(expectedGeneration) {
-		t.Errorf("expected: %d -- actual: %d", len(expectedGeneration), len(actualGeneration))
-		return
-	}
-	if len(actualGeneration[0]) != len(expectedGeneration[0]) {
-		t.Errorf("expected: %d -- actual: %d", len(expectedGeneration[0]), len(actualGeneration[0]))
-		return
-	}
-	err := elementWiseCheck(expectedGeneration, actualGeneration)
-	if err != nil {
-		t.Error(err.Error())
-	}
-}
+		if len(actualGeneration) != len(expectedGeneration) {
+			t.Errorf("expected: %d -- actual: %d", len(expectedGeneration), len(actualGeneration))
+			return
+		}
+		if len(actualGeneration[0]) != len(expectedGeneration[0]) {
+			t.Errorf("expected: %d -- actual: %d", len(expectedGeneration[0]), len(actualGeneration[0]))
+			return
+		}
+		err := elementWiseCheck(expectedGeneration, actualGeneration)
+		if err != nil {
+			t.Error(err.Error())
+		}
+	})
 
-func TestGetCurrentGenerationShouldTrimTopSideToNearestLivingCell(t *testing.T) {
-	var initialGeneration [][]bool = [][]bool{
-		{false, false},
-		{true, true},
-		{true, true},
-	}
-	cellState, _ := cell.New(initialGeneration)
-	var expectedGeneration [][]bool = [][]bool{
-		{true, true},
-		{true, true},
-	}
+	t.Run("should trim top side to nearest living cell", func(t *testing.T) {
+		var initialGeneration [][]bool = [][]bool{
+			{false, false},
+			{true, true},
+			{true, true},
+		}
+		cellState, _ := cell.New(initialGeneration)
+		var expectedGeneration [][]bool = [][]bool{
+			{true, true},
+			{true, true},
+		}
 
-	actualGeneration := cellState.GetGeneration()
+		actualGeneration := cellState.GetGeneration()
 
-	if len(actualGeneration) != len(expectedGeneration) {
-		t.Errorf("expected: %d -- actual: %d", len(expectedGeneration), len(actualGeneration))
-		return
-	}
-	if len(actualGeneration[0]) != len(expectedGeneration[0]) {
-		t.Errorf("expected: %d -- actual: %d", len(expectedGeneration[0]), len(actualGeneration[0]))
-		return
-	}
-	err := elementWiseCheck(expectedGeneration, actualGeneration)
-	if err != nil {
-		t.Error(err.Error())
-	}
-}
+		if len(actualGeneration) != len(expectedGeneration) {
+			t.Errorf("expected: %d -- actual: %d", len(expectedGeneration), len(actualGeneration))
+			return
+		}
+		if len(actualGeneration[0]) != len(expectedGeneration[0]) {
+			t.Errorf("expected: %d -- actual: %d", len(expectedGeneration[0]), len(actualGeneration[0]))
+			return
+		}
+		err := elementWiseCheck(expectedGeneration, actualGeneration)
+		if err != nil {
+			t.Error(err.Error())
+		}
+	})
 
-func TestGetCurrentGenerationShouldReturnEmptyNoLivingcell(t *testing.T) {
-	var initialGeneration [][]bool = [][]bool{
-		{false, false, false},
-		{false, false, false},
-		{false, false, false},
-	}
-	cellState, _ := cell.New(initialGeneration)
-	var expectedGeneration [][]bool = make([][]bool, 0)
+	t.Run("should return empty no living cell", func(t *testing.T) {
+		var initialGeneration [][]bool = [][]bool{
+			{false, false, false},
+			{false, false, false},
+			{false, false, false},
+		}
+		cellState, _ := cell.New(initialGeneration)
+		var expectedGeneration [][]bool = make([][]bool, 0)
 
-	actualGeneration := cellState.GetGeneration()
+		actualGeneration := cellState.GetGeneration()
 
-	if len(actualGeneration) != len(expectedGeneration) {
-		t.Errorf("expected: %d -- actual: %d", len(expectedGeneration), len(actualGeneration))
-	}
+		if len(actualGeneration) != len(expectedGeneration) {
+			t.Errorf("expected: %d -- actual: %d", len(expectedGeneration), len(actualGeneration))
+		}
+	})
 }
 
 func TestGetNextGenerationShouldKillLivingCellWithLessThanTwoNeighbors(t *testing.T) {
