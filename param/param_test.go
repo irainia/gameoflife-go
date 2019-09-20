@@ -425,22 +425,24 @@ func TestNew(t *testing.T) {
 	})
 }
 
-func TestGetNumOfGenerationShouldReturnTheSameNumber(t *testing.T) {
-	var args []string = []string{
-		"--inputtype=file",
-		"--inputpath=./input.cell",
-		"--outputtype=file",
-		"--outputpath=./output.cell",
-		"--generation=10",
-	}
-	parameter, _ := param.New(args, nil, nil)
-	var expectedNumOfGeneration int = 10
+func TestGetNumberOfGeneration(t *testing.T) {
+	t.Run("should return the same number as parameter", func(t *testing.T) {
+		var args []string = []string{
+			"--inputtype=file",
+			"--inputpath=./input.cell",
+			"--outputtype=file",
+			"--outputpath=./output.cell",
+			"--generation=10",
+		}
+		parameter, _ := param.New(args, nil, nil)
+		var expectedNumOfGeneration int = 10
 
-	actualNumOfGeneration := parameter.GetNumOfGeneration()
+		actualNumOfGeneration := parameter.GetNumOfGeneration()
 
-	if actualNumOfGeneration != expectedNumOfGeneration {
-		t.Errorf("expected: %d -- actual: %d", expectedNumOfGeneration, actualNumOfGeneration)
-	}
+		if actualNumOfGeneration != expectedNumOfGeneration {
+			t.Errorf("expected: %d -- actual: %d", expectedNumOfGeneration, actualNumOfGeneration)
+		}
+	})
 }
 
 func TestGetReaderShouldReturnTheSameReader(t *testing.T) {
