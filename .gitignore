@@ -1,2 +1,2 @@
 bin/
-Gopkg.lock
+vendor/

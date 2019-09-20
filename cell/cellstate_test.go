@@ -2,10 +2,10 @@ package cell_test
 
 import (
 	"errors"
-	"fmt"
 	"testing"
 
 	"github.com/Irainia/gameoflife-go/cell"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestNew(t *testing.T) {
@@ -86,10 +86,7 @@ func TestGetCurrentGeneration(t *testing.T) {
 
 		actualGeneration := cellState.GetGeneration()
 
-		err := elementWiseCheck(expectedGeneration, actualGeneration)
-		if err != nil {
-			t.Error(err.Error())
-		}
+		assert.EqualValues(t, expectedGeneration, actualGeneration)
 	})
 
 	t.Run("should be immutable on creation", func(t *testing.T) {
@@ -108,10 +105,7 @@ func TestGetCurrentGeneration(t *testing.T) {
 		initialGeneration[1][1] = !initialGeneration[1][1]
 		actualGeneration := cellState.GetGeneration()
 
-		err := elementWiseCheck(expectedGeneration, actualGeneration)
-		if err != nil {
-			t.Error(err.Error())
-		}
+		assert.EqualValues(t, expectedGeneration, actualGeneration)
 	})
 
 	t.Run("should be immutable on retrieval", func(t *testing.T) {
@@ -131,10 +125,7 @@ func TestGetCurrentGeneration(t *testing.T) {
 		temporaryState[1][1] = !temporaryState[1][1]
 		actualGeneration := cellState.GetGeneration()
 
-		err := elementWiseCheck(expectedGeneration, actualGeneration)
-		if err != nil {
-			t.Error(err.Error())
-		}
+		assert.EqualValues(t, expectedGeneration, actualGeneration)
 	})
 
 	t.Run("should trim right side to nearest living cell", func(t *testing.T) {
@@ -150,18 +141,9 @@ func TestGetCurrentGeneration(t *testing.T) {
 
 		actualGeneration := cellState.GetGeneration()
 
-		if len(actualGeneration) != len(expectedGeneration) {
-			t.Errorf("expected: %d -- actual: %d", len(expectedGeneration), len(actualGeneration))
-			return
-		}
-		if len(actualGeneration[0]) != len(expectedGeneration[0]) {
-			t.Errorf("expected: %d -- actual: %d", len(expectedGeneration[0]), len(actualGeneration[0]))
-			return
-		}
-		err := elementWiseCheck(expectedGeneration, actualGeneration)
-		if err != nil {
-			t.Error(err.Error())
-		}
+		assert.Len(t, actualGeneration, len(expectedGeneration))
+		assert.Len(t, actualGeneration[0], len(expectedGeneration[0]))
+		assert.EqualValues(t, expectedGeneration, actualGeneration)
 	})
 
 	t.Run("should trim bottom side to nearest living cell", func(t *testing.T) {
@@ -178,18 +160,9 @@ func TestGetCurrentGeneration(t *testing.T) {
 
 		actualGeneration := cellState.GetGeneration()
 
-		if len(actualGeneration) != len(expectedGeneration) {
-			t.Errorf("expected: %d -- actual: %d", len(expectedGeneration), len(actualGeneration))
-			return
-		}
-		if len(actualGeneration[0]) != len(expectedGeneration[0]) {
-			t.Errorf("expected: %d -- actual: %d", len(expectedGeneration[0]), len(actualGeneration[0]))
-			return
-		}
-		err := elementWiseCheck(expectedGeneration, actualGeneration)
-		if err != nil {
-			t.Error(err.Error())
-		}
+		assert.Len(t, actualGeneration, len(expectedGeneration))
+		assert.Len(t, actualGeneration[0], len(expectedGeneration[0]))
+		assert.EqualValues(t, expectedGeneration, actualGeneration)
 	})
 
 	t.Run("should trim left side to nearest living cell", func(t *testing.T) {
@@ -205,18 +178,9 @@ func TestGetCurrentGeneration(t *testing.T) {
 
 		actualGeneration := cellState.GetGeneration()
 
-		if len(actualGeneration) != len(expectedGeneration) {
-			t.Errorf("expected: %d -- actual: %d", len(expectedGeneration), len(actualGeneration))
-			return
-		}
-		if len(actualGeneration[0]) != len(expectedGeneration[0]) {
-			t.Errorf("expected: %d -- actual: %d", len(expectedGeneration[0]), len(actualGeneration[0]))
-			return
-		}
-		err := elementWiseCheck(expectedGeneration, actualGeneration)
-		if err != nil {
-			t.Error(err.Error())
-		}
+		assert.Len(t, actualGeneration, len(expectedGeneration))
+		assert.Len(t, actualGeneration[0], len(expectedGeneration[0]))
+		assert.EqualValues(t, expectedGeneration, actualGeneration)
 	})
 
 	t.Run("should trim top side to nearest living cell", func(t *testing.T) {
@@ -233,18 +197,9 @@ func TestGetCurrentGeneration(t *testing.T) {
 
 		actualGeneration := cellState.GetGeneration()
 
-		if len(actualGeneration) != len(expectedGeneration) {
-			t.Errorf("expected: %d -- actual: %d", len(expectedGeneration), len(actualGeneration))
-			return
-		}
-		if len(actualGeneration[0]) != len(expectedGeneration[0]) {
-			t.Errorf("expected: %d -- actual: %d", len(expectedGeneration[0]), len(actualGeneration[0]))
-			return
-		}
-		err := elementWiseCheck(expectedGeneration, actualGeneration)
-		if err != nil {
-			t.Error(err.Error())
-		}
+		assert.Len(t, actualGeneration, len(expectedGeneration))
+		assert.Len(t, actualGeneration[0], len(expectedGeneration[0]))
+		assert.EqualValues(t, expectedGeneration, actualGeneration)
 	})
 
 	t.Run("should return empty no living cell", func(t *testing.T) {
@@ -258,9 +213,7 @@ func TestGetCurrentGeneration(t *testing.T) {
 
 		actualGeneration := cellState.GetGeneration()
 
-		if len(actualGeneration) != len(expectedGeneration) {
-			t.Errorf("expected: %d -- actual: %d", len(expectedGeneration), len(actualGeneration))
-		}
+		assert.Len(t, actualGeneration, len(expectedGeneration))
 	})
 
 	t.Run("should kill living cell with less than two neighbors", func(t *testing.T) {
@@ -272,9 +225,7 @@ func TestGetCurrentGeneration(t *testing.T) {
 
 		actualGeneration := cellState.GetNextState().GetGeneration()
 
-		if len(actualGeneration) != len(expectedGeneration) {
-			t.Errorf("expected: %d -- actual: %d", len(expectedGeneration), len(actualGeneration))
-		}
+		assert.Len(t, actualGeneration, len(expectedGeneration))
 	})
 
 	t.Run("should survive living cell with two neighbors", func(t *testing.T) {
@@ -292,10 +243,7 @@ func TestGetCurrentGeneration(t *testing.T) {
 
 		actualGeneration := cellState.GetNextState().GetGeneration()
 
-		err := elementWiseCheck(expectedGeneration, actualGeneration)
-		if err != nil {
-			t.Error(err.Error())
-		}
+		assert.EqualValues(t, expectedGeneration, actualGeneration)
 	})
 
 	t.Run("should survive or reproduce living cell with three neighbors", func(t *testing.T) {
@@ -311,10 +259,7 @@ func TestGetCurrentGeneration(t *testing.T) {
 
 		actualGeneration := cellState.GetNextState().GetGeneration()
 
-		err := elementWiseCheck(expectedGeneration, actualGeneration)
-		if err != nil {
-			t.Error(err.Error())
-		}
+		assert.EqualValues(t, expectedGeneration, actualGeneration)
 	})
 
 	t.Run("shoud kill living cell with more than three neighbors", func(t *testing.T) {
@@ -331,10 +276,7 @@ func TestGetCurrentGeneration(t *testing.T) {
 
 		actualGeneration := cellState.GetNextState().GetGeneration()
 
-		err := elementWiseCheck(expectedGeneration, actualGeneration)
-		if err != nil {
-			t.Error(err.Error())
-		}
+		assert.EqualValues(t, expectedGeneration, actualGeneration)
 	})
 }
 
@@ -348,9 +290,7 @@ func TestString(t *testing.T) {
 
 		actualString := cellState.String()
 
-		if actualString != expectedString {
-			t.Errorf("expected: %s -- actual: %s", expectedString, actualString)
-		}
+		assert.Equal(t, expectedString, actualString)
 	})
 
 	t.Run("convert False -> '-'", func(t *testing.T) {
@@ -362,9 +302,7 @@ func TestString(t *testing.T) {
 
 		actualString := cellState.String()
 
-		if actualString != expectedString {
-			t.Errorf("expected: %s -- actual: %s", expectedString, actualString)
-		}
+		assert.Equal(t, expectedString, actualString)
 	})
 
 	t.Run("add new line each row except last row", func(t *testing.T) {
@@ -377,21 +315,6 @@ func TestString(t *testing.T) {
 
 		actualString := cellState.String()
 
-		if actualString != expectedString {
-			t.Errorf("expected: %s -- actual: %s", expectedString, actualString)
-		}
+		assert.Equal(t, expectedString, actualString)
 	})
-}
-
-func elementWiseCheck(expectedGeneration, actualGeneration [][]bool) error {
-	for i := 0; i < len(actualGeneration); i++ {
-		for j := 0; j < len(actualGeneration[i]); j++ {
-			if actualGeneration[i][j] != expectedGeneration[i][j] {
-				return errors.New(fmt.Sprintf("expected: [%d][%d] [%t] -- actual: [%d][%d] [%t]",
-					i, j, expectedGeneration[i][j], i, j, actualGeneration[i][j]))
-			}
-		}
-	}
-
-	return nil
 }
