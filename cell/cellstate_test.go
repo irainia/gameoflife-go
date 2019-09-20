@@ -8,68 +8,70 @@ import (
 	"github.com/Irainia/gameoflife-go/cell"
 )
 
-func TestNewShouldReturnNilAndErrorForInitialGenerationNil(t *testing.T) {
-	var expectedCellState *cell.CellState = nil
-	var expectedError error = errors.New(cell.GenerationNilError)
+func TestNew(t *testing.T) {
+	t.Run("should return nil and error for initial generation nil", func(t *testing.T) {
+		var expectedCellState *cell.CellState = nil
+		var expectedError error = errors.New(cell.GenerationNilError)
 
-	actualCellState, actualError := cell.New(nil)
+		actualCellState, actualError := cell.New(nil)
 
-	if actualCellState != expectedCellState {
-		t.Error("expected: nil -- actual: not nil")
-		return
-	}
-	if actualError == nil {
-		t.Errorf("expected: %s -- actual: nil", expectedError.Error())
-		return
-	}
-	if actualError.Error() != expectedError.Error() {
-		t.Errorf("expected: %s -- actual: %s", expectedError.Error(), actualError.Error())
-	}
-}
+		if actualCellState != expectedCellState {
+			t.Error("expected: nil -- actual: not nil")
+			return
+		}
+		if actualError == nil {
+			t.Errorf("expected: %s -- actual: nil", expectedError.Error())
+			return
+		}
+		if actualError.Error() != expectedError.Error() {
+			t.Errorf("expected: %s -- actual: %s", expectedError.Error(), actualError.Error())
+		}
+	})
 
-func TestNewShouldReturnNilAndErrorForInitialGenerationEmpty(t *testing.T) {
-	var expectedCellState *cell.CellState = nil
-	var expectedError error = errors.New(cell.GenerationEmptyError)
-	var dim int = 0
-	initialGeneration := make([][]bool, dim)
+	t.Run("should return nil and error for initial generation empty", func(t *testing.T) {
+		var expectedCellState *cell.CellState = nil
+		var expectedError error = errors.New(cell.GenerationEmptyError)
+		var dim int = 0
+		initialGeneration := make([][]bool, dim)
 
-	actualCellState, actualError := cell.New(initialGeneration)
+		actualCellState, actualError := cell.New(initialGeneration)
 
-	if actualCellState != expectedCellState {
-		t.Error("expected: nil -- actual: not nil")
-		return
-	}
-	if actualError == nil {
-		t.Errorf("expected: %s -- actual: nil", expectedError.Error())
-		return
-	}
-	if actualError.Error() != expectedError.Error() {
-		t.Errorf("expected: %s -- actual: %s", expectedError.Error(), actualError.Error())
-	}
-}
+		if actualCellState != expectedCellState {
+			t.Error("expected: nil -- actual: not nil")
+			return
+		}
+		if actualError == nil {
+			t.Errorf("expected: %s -- actual: nil", expectedError.Error())
+			return
+		}
+		if actualError.Error() != expectedError.Error() {
+			t.Errorf("expected: %s -- actual: %s", expectedError.Error(), actualError.Error())
+		}
+	})
 
-func TestNewShouldReturnNilAndErrorForInitialGenerationNotRectangle(t *testing.T) {
-	var initialGeneration [][]bool = [][]bool{
-		{true, true, true},
-		{true},
-		{true, true},
-	}
-	var expectedCellState *cell.CellState = nil
-	var expectedError = errors.New(cell.GenerationShapeNotRectangleError)
+	t.Run("should return nil and error for initial generation not rectangle", func(t *testing.T) {
+		var initialGeneration [][]bool = [][]bool{
+			{true, true, true},
+			{true},
+			{true, true},
+		}
+		var expectedCellState *cell.CellState = nil
+		var expectedError = errors.New(cell.GenerationShapeNotRectangleError)
 
-	actualGeneration, actualError := cell.New(initialGeneration)
+		actualGeneration, actualError := cell.New(initialGeneration)
 
-	if actualGeneration != expectedCellState {
-		t.Error("expected: nil -- actual: not nil")
-		return
-	}
-	if actualError == nil {
-		t.Errorf("expected: %s -- actual: nil", expectedError.Error())
-		return
-	}
-	if actualError.Error() != expectedError.Error() {
-		t.Errorf("expected: %s -- actual: %s", expectedError.Error(), actualError.Error())
-	}
+		if actualGeneration != expectedCellState {
+			t.Error("expected: nil -- actual: not nil")
+			return
+		}
+		if actualError == nil {
+			t.Errorf("expected: %s -- actual: nil", expectedError.Error())
+			return
+		}
+		if actualError.Error() != expectedError.Error() {
+			t.Errorf("expected: %s -- actual: %s", expectedError.Error(), actualError.Error())
+		}
+	})
 }
 
 func TestGetCurrentGenerationShouldReturnInitialGeneration(t *testing.T) {
