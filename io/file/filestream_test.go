@@ -6,8 +6,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/Irainia/gameoflife-go/cell"
-	"github.com/Irainia/gameoflife-go/io/file"
+	"github.com/irainia/gameoflife-go/cell"
+	"github.com/irainia/gameoflife-go/io/file"
 	"github.com/stretchr/testify/assert"
 )
 

@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/Irainia/gameoflife-go/cell"
+	"github.com/irainia/gameoflife-go/cell"
 	"github.com/stretchr/testify/assert"
 )
 

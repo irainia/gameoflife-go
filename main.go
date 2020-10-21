@@ -5,8 +5,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/Irainia/gameoflife-go/cell"
-	"github.com/Irainia/gameoflife-go/param"
+	"github.com/irainia/gameoflife-go/cell"
+	"github.com/irainia/gameoflife-go/param"
 )
 
 func main() {

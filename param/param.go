@@ -5,8 +5,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/Irainia/gameoflife-go/io"
-	"github.com/Irainia/gameoflife-go/io/file"
+	"github.com/irainia/gameoflife-go/io"
+	"github.com/irainia/gameoflife-go/io/file"
 )
 
 const (
